@@ -8,9 +8,7 @@ draw_rows
 	lda #0
 	sta draw_col
 draw_cols
-	lda #back_char
-	ldx #back_color
-	jsr draw_card
+	jsr draw_cell
 	inc draw_col
 	lda draw_col
 	cmp #4
@@ -21,24 +19,53 @@ draw_cols
 	bne draw_rows
 	rts
 
-show_cursor
+draw_cursor_cell
 	lda cursor_col
 	sta draw_col
 	lda cursor_row
 	sta draw_row
-	lda #back_color
-	ora #cursor_bit
-	tax
-	lda #back_char
-	jmp draw_card
+	; weiter in draw_cell
 
-hide_cursor
-	lda cursor_col
-	sta draw_col
-	lda cursor_row
-	sta draw_row
+; Zeichnet den Platz draw_col/draw_row: leer, verdeckt oder offen.
+; Steht der Cursor darauf, blinkt die Fläche.
+draw_cell
+	lda draw_row
+	asl
+	asl
+	ora draw_col
+	tax
+	lda board,x
+	bne cell_card
+	tax			; leer: Zeichen 0, Farbe 0
+	jmp draw_card
+cell_card
+	cpx open1
+	beq cell_open
+	cpx open2
+	beq cell_open
+	lda #back_color
+	sta cell_color
 	lda #back_char
-	ldx #back_color
+	bne cell_cursor
+cell_open
+	tay
+	lda fruit_color-1,y
+	sta cell_color
+	lda fruit_char-1,y
+cell_cursor
+	pha
+	lda draw_col
+	cmp cursor_col
+	bne cell_draw
+	lda draw_row
+	cmp cursor_row
+	bne cell_draw
+	lda cell_color
+	ora #cursor_bit
+	sta cell_color
+cell_draw
+	pla
+	ldx cell_color
 	jmp draw_card
 
 draw_card

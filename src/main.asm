@@ -1,4 +1,4 @@
-; Endlos-Memory. Raster 4×6, verdeckte Karten, Cursor.
+; Endlos-Memory. Raster 4×6, zwei Karten aufdecken, Paare verschwinden.
 
 screen     = $0c00
 color      = $0800
@@ -28,6 +28,13 @@ sy         = $042a
 sx         = $042b
 edges      = $042c
 motif      = $042d
+phase      = $042e
+open1      = $042f
+open2      = $0430
+cell_color = $0431
+shuf_i     = $0432
+shuf_n     = $0433
+rnd        = $0434		; 2 Bytes
 scr        = $fb
 colr       = $fd
 
@@ -64,12 +71,11 @@ start
 	lda #$30		; Zeichensatz bei $3000
 	sta ted_misc2
 	jsr clear_screen
+	jsr seed_random
 	jsr init_board
 	jsr draw_board
 !ifdef PREVIEW {
 	jsr draw_preview
-} else {
-	jsr show_cursor
 }
 loop
 	jsr read_edges
@@ -98,6 +104,11 @@ not_left
 	lda #3
 	jsr move_cursor
 not_right
+	lda edges
+	and #$10
+	beq not_fire
+	jsr pick
+not_fire
 	jsr settle
 	jmp loop
 

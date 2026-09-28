@@ -112,7 +112,7 @@ BASIC und Kernal bleiben eingeblendet. Die Spielschleife ruft den Kernal nicht.
 
 Index einer Zelle: `col + row*4`, `row` 0 ist unten.
 
-Zufall: 16-Bit-LFSR. Startwert aus dem Rasterzähler `$FF0B`, zweimal im Abstand einiger Zeilen zusammengesetzt. Ein Startwert 0 wird zu 1.
+Zufall: 16-Bit-LFSR. Startwert aus der Rasterposition: `$FF1E` (Spalte) und `$FF1D` (Zeile), zweimal im Abstand einiger Zeilen gelesen. `$FF0B` ist nur das Vergleichsregister für den Raster-IRQ. Ein Startwert 0 wird zu 1.
 
 Ton über die zwei TED-Kanäle: kurz und hoch bei einem Paar, kurz und tief bei einem Fehlversuch, ein Tick je Fallschritt.
 

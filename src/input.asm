@@ -1,5 +1,5 @@
 ; Liefert in A die neu gedrückten Richtungen.
-; Bit 0 hoch, 1 runter, 2 links, 3 rechts.
+; Bit 0 hoch, 1 runter, 2 links, 3 rechts, 4 Feuer.
 
 read_edges
 	jsr read_dirs
@@ -19,8 +19,16 @@ read_dirs
 	stx $ff08
 	lda $ff08
 	eor #$ff
+	sta key
 	and #$0f
 	sta dirs
+	lda key
+	and #$40		; Feuer
+	beq joy_no_fire
+	lda dirs
+	ora #$10
+	sta dirs
+joy_no_fire
 	lda #$df		; Tastaturzeile 5: runter Bit 0, hoch Bit 3
 	sta $fd30
 	lda #$ff
@@ -61,5 +69,24 @@ key_not_left
 	ora #$08
 	sta dirs
 key_not_right
+	lda #$7f		; Tastaturzeile 7: Leertaste Bit 4
+	sta $fd30
+	lda #$ff
+	sta $ff08
+	lda $ff08
+	and #$10
+	beq key_fire
+	lda #$fe		; Tastaturzeile 0: Return Bit 1
+	sta $fd30
+	lda #$ff
+	sta $ff08
+	lda $ff08
+	and #$02
+	bne key_no_fire
+key_fire
+	lda dirs
+	ora #$10
+	sta dirs
+key_no_fire
 	lda dirs
 	rts
