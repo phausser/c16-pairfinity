@@ -1,25 +1,41 @@
 ; Brett: 24 Bytes, Index = col + row*4, 0 = leer. row 0 liegt unten.
 
-; Vorläufige Auslage, bis Schritt 5 kommt: 24 Karten in Paaren, gemischt.
+; Start: 12 Karten, jede Spalte drei hoch. Jede Frucht einmal, dazu vier
+; zufällige Kopien, alles gemischt.
 init_board
 	ldx #23
-copy_deck
-	lda deck,x
+	lda #0
+board_clear
 	sta board,x
 	dex
-	bpl copy_deck
-	ldx #23
+	bpl board_clear
+	ldx #7
+board_eight
+	txa
+	clc
+	adc #1
+	sta board,x
+	dex
+	bpl board_eight
+	ldx #8
+board_extra
+	stx shuf_i
+	jsr random
+	and #7
+	clc
+	adc #1
+	ldx shuf_i
+	sta board,x
+	inx
+	cpx #12
+	bne board_extra
+	ldx #11
 shuffle
 	stx shuf_i
 	inx
-	stx shuf_n
+	stx count
 	jsr random
-shuffle_mod
-	cmp shuf_n
-	bcc shuffle_swap
-	sbc shuf_n
-	jmp shuffle_mod
-shuffle_swap
+	jsr mod_count
 	tay
 	ldx shuf_i
 	lda board,x
@@ -36,11 +52,11 @@ shuffle_swap
 	lda #0
 	sta phase
 	sta prev_dirs
+	sta game_over
+	sta score
+	sta score+1
+	sta score+2
 	jmp cursor_home
-
-deck
-	!byte 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3
-	!byte 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8
 
 ; Cursor auf die erste liegende Karte: Spalten von links, darin von unten.
 ; Ist das Feld leer, steht in cursor_col $ff.
@@ -199,6 +215,7 @@ pick_second
 	lda #0			; Paar: beide Plätze leeren
 	sta board,x
 	sta board,y
+	jsr add_pair
 pick_close
 	lda #0
 	sta phase

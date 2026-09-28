@@ -3,8 +3,29 @@
 settle_board
 	jsr pack
 	jsr cursor_check
+	jsr free_columns
+	bne settle_drop
+	lda #1			; kein Platz: Spielende
+	sta game_over
+	jmp draw_board
+settle_drop
 	jsr drop
 	jmp draw_board
+
+; Liefert in A und count die Zahl der Spalten mit freiem Platz.
+free_columns
+	lda #0
+	sta count
+	ldx #3
+free_count
+	lda board+20,x		; oberste Reihe der Spalte
+	bne free_full
+	inc count
+free_full
+	dex
+	bpl free_count
+	lda count
+	rts
 
 ; Rückt alle Karten über der untersten Lücke einer Spalte einen Platz tiefer,
 ; vier Zeichenzeilen lang animiert, alle Spalten zugleich. Dann die nächste Lücke.
@@ -145,17 +166,7 @@ pack_col_done
 
 ; Neue Karte: zufällige Spalte mit Platz, Motiv einer zufälligen liegenden Karte.
 drop
-	lda #0
-	sta count
-	ldx #3
-drop_count
-	lda board+20,x		; oberste Reihe der Spalte
-	bne drop_full
-	inc count
-drop_full
-	dex
-	bpl drop_count
-	lda count
+	jsr free_columns
 	bne drop_room
 	rts			; kein Platz
 drop_room

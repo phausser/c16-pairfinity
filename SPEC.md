@@ -34,7 +34,7 @@ Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Rast
 
 `col` läuft von 0 links nach 3 rechts. `row` 0 ist der unterste Platz der Spalte, `row` 5 der oberste. Eine Spalte der Höhe `h` belegt die Reihen `0 .. h-1`.
 
-Kopfzeile in Bildschirmzeile 0: links das Wort `PAARE`, rechts drei Ziffern. Bei Spielende steht `VOLL` in Bildschirmzeile 24.
+Kopfzeile in Bildschirmzeile 0, bündig über dem Raster: `PAARE` ab Spalte 12, drei Ziffern in den Spalten 24–26. Bei Spielende steht `VOLL` in Bildschirmzeile 24, Spalten 17–20.
 
 Zeichen im Satz:
 

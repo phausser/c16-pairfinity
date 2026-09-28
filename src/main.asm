@@ -1,4 +1,4 @@
-; Endlos-Memory. Raster 4×6, zwei Karten aufdecken, Paare verschwinden.
+; Endlos-Memory. Raster 4×6, Paare verschwinden, Spalten packen sich, neue Karten fallen.
 
 screen     = $0c00
 color      = $0800
@@ -33,7 +33,6 @@ open1      = $042f
 open2      = $0430
 cell_color = $0431
 shuf_i     = $0432
-shuf_n     = $0433
 rnd        = $0434		; 2 Bytes
 gap        = $0436		; 4 Bytes
 step       = $043a
@@ -50,11 +49,22 @@ clear_end  = $0444
 bg_step    = $0445
 bg_timer   = $0446
 bg_row_byte = $0447
+score      = $0448		; 3 Ziffern, höchste zuerst
+game_over  = $044b
 scr        = $fb
 colr       = $fd
 
 back_char  = 1
 back_color = $51
+hud_color  = $71
+ch_0       = $52		; Ziffern, danach A E L O P R V
+ch_a       = $5c
+ch_e       = $5d
+ch_l       = $5e
+ch_o       = $5f
+ch_p       = $60
+ch_r       = $61
+ch_v       = $62
 cursor_lum = $10		; Cursor: eine Helligkeitsstufe heller
 
 charset    = $3000
@@ -95,10 +105,12 @@ start
 	lda #bg_speed
 	sta bg_timer
 	jsr bg_glyph
-	jsr clear_screen
 	jsr seed_random
+new_game
+	jsr clear_screen
 	jsr init_board
 	jsr draw_board
+	jsr draw_hud
 !ifdef PREVIEW {
 	jsr draw_preview
 }
@@ -136,9 +148,22 @@ not_right
 	beq not_fire
 	jsr pick
 not_fire
+	lda game_over
+	bne game_end
 	ldx #3			; kurz warten, damit ein prellender Taster nicht zweimal zählt
 	jsr wait_frames
 	jmp loop
+
+; Kein Platz mehr: VOLL zeigen, auf Feuer warten, neu geben.
+game_end
+	jsr draw_full
+wait_restart
+	ldx #1
+	jsr wait_frames
+	jsr read_edges
+	and #$10
+	beq wait_restart
+	jmp new_game
 
 	!source "src/board.asm"
 	!source "src/draw.asm"

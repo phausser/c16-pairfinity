@@ -265,6 +265,63 @@ line_lo
 line_hi
 	!for i, 0, 24 { !byte >(screen + i * 40) }
 
+; Kopfzeile über dem Raster: PAARE links, Punktzahl rechts.
+draw_hud
+	ldx #4
+hud_word
+	lda word_paare,x
+	sta screen + 12,x
+	lda #hud_color
+	sta color + 12,x
+	dex
+	bpl hud_word
+	; weiter in draw_score
+
+draw_score
+	ldx #2
+score_digit
+	lda score,x
+	clc
+	adc #ch_0
+	sta screen + 24,x
+	lda #hud_color
+	sta color + 24,x
+	dex
+	bpl score_digit
+	rts
+
+; Ein Paar mehr, dezimal mit drei Ziffern.
+add_pair
+	ldx #2
+add_digit
+	inc score,x
+	lda score,x
+	cmp #10
+	bcc add_done
+	lda #0
+	sta score,x
+	dex
+	bpl add_digit
+add_done
+	jmp draw_score
+
+; VOLL unter dem Raster, mittig.
+draw_full
+	ldx #3
+full_letter
+	lda word_voll,x
+	sta screen + 24 * 40 + 17,x
+	lda #hud_color
+	sta color + 24 * 40 + 17,x
+	dex
+	bpl full_letter
+	rts
+
+word_paare
+	!byte ch_p, ch_a, ch_a, ch_r, ch_e
+word_voll
+	!byte ch_v, ch_o, ch_l, ch_l
+
 ; Erstes Zeichen und Flächenfarbe der Motive 1–8.
 fruit_char
 	!byte $0a, $13, $1c, $25, $2e, $37, $40, $49
