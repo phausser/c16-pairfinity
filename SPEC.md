@@ -53,14 +53,14 @@ Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Di
 
 | Motiv | Fläche | Byte | Silhouette |
 | --- | --- | --- | --- |
-| 1 Apfel | Rot | `$42` | rund, Stiel, ein Blatt |
+| 1 Apfel | Rot | `$52` | rund, Stiel, ein Blatt |
 | 2 Orange | Orange | `$58` | Kreis, kleiner Stiel, Blatt |
-| 3 Birne | Grün | `$45` | schmal oben, bauchig unten, Stiel |
-| 4 Banane | Gelb | `$67` | Sichel |
-| 5 Traube | Purpur | `$44` | mehrere Kugeln, kleines Blatt |
-| 6 Kirsche | Pink | `$4B` | zwei Kugeln, Stiele zusammen |
-| 7 Zitrone | Gelbgrün | `$6A` | Oval mit Spitzen |
-| 8 Erdbeere | Dunkelrot | `$32` | breit unten, Blätterkrone oben |
+| 3 Birne | Grün | `$55` | schmal oben, bauchig unten, Stiel |
+| 4 Banane | Goldgelb | `$69` | Sichel |
+| 5 Traube | Blauviolett | `$4E` | mehrere Kugeln, kleines Blatt |
+| 6 Kirsche | Kirschrot | `$3B` | zwei Kugeln, Stiele zusammen |
+| 7 Zitrone | Zitronengelb | `$67` | Oval mit Spitzen |
+| 8 Erdbeere | Pink | `$5B` | breit oben, spitz unten, Blätterkrone |
 
 HUD-Text ist Weiß, `$71`.
 

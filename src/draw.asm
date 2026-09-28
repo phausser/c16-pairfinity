@@ -140,7 +140,7 @@ ptr_ok
 fruit_char
 	!byte $0a, $13, $1c, $25, $2e, $37, $40, $49
 fruit_color
-	!byte $42, $58, $45, $67, $44, $4b, $6a, $32
+	!byte $52, $58, $55, $69, $4e, $3b, $67, $5b
 
 !ifdef PREVIEW {
 ; Alle Plätze offen, Motive 1–8 der Reihe nach.
