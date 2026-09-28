@@ -203,9 +203,11 @@ pick_cursor
 	bne pick_second
 	stx open1
 	inc phase
+	jsr click
 	jmp draw_cursor_cell
 pick_second
 	stx open2
+	jsr click
 	jsr draw_cursor_cell
 	ldx #30
 	jsr wait_frames

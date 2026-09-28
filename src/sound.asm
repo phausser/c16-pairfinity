@@ -1,10 +1,10 @@
-; TED-Ton. Stimme 1 spielt Tonfolgen, Stimme 2 rauscht für den Tick.
+; TED-Ton. Stimme 1 spielt Tonfolgen, Stimme 2 klickt beim Aufdecken und rauscht beim Fallen.
 ; Registerwert für f Hz (PAL): 1024 - 111861 / f.
 
 ted_freq1  = $ff0e		; Stimme 1, untere 8 Bit
 ted_freq2  = $ff0f		; Stimme 2, untere 8 Bit
 ted_freq2h = $ff10		; Bits 0–1: Stimme 2, obere 2 Bit
-ted_sound  = $ff11		; Bits 0–3 Lautstärke, 4 Stimme 1, 6 Rauschen auf Stimme 2
+ted_sound  = $ff11		; Bits 0–3 Lautstärke, 4 Stimme 1, 5 Rechteck und 6 Rauschen auf Stimme 2
 				; $ff12 Bits 0–1: Stimme 1, obere 2 Bit
 
 volume     = 6
@@ -51,13 +51,31 @@ snd_off
 ; Kurzes Rauschen, ein Frame lang.
 tick
 	lda #<tick_freq
+	ldx #>tick_freq
+	ldy #%01000000
+	bne voice2
+
+; Kurzer hoher Klick, ein Frame lang.
+click
+	lda #<click_freq
+	ldx #>click_freq
+	ldy #%00100000
+	; weiter in voice2
+
+; Stimme 2 für einen Frame. A/X = Frequenz, Y = Rechteck- oder Rauschbit.
+voice2
 	sta ted_freq2
+	txa
+	sta tick_x
 	lda ted_freq2h
 	and #%11111100
-	ora #>tick_freq
+	ora tick_x
 	sta ted_freq2h
+	tya
+	sta tick_x
 	lda ted_sound
-	ora #%01000000
+	and #%10011111
+	ora tick_x
 	sta ted_sound
 	lda #1
 	sta tick_time
@@ -76,12 +94,13 @@ sound_no_tone
 	dec tick_time
 	bne sound_done
 	lda ted_sound
-	and #%10111111
+	and #%10011111
 	sta ted_sound
 sound_done
 	rts
 
 tick_freq  = 1000
+click_freq = 1024 - 111861 / 2000
 
 !macro note .f, .frames {
 	!byte <(1024 - 111861 / .f), >(1024 - 111861 / .f), .frames

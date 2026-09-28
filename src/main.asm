@@ -56,6 +56,7 @@ shake_i    = $044d
 snd_pos    = $044e
 snd_time   = $044f
 tick_time  = $0450
+tick_x     = $0451
 scr        = $fb
 colr       = $fd
 
