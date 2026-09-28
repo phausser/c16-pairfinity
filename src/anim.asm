@@ -296,3 +296,31 @@ mod_count
 	jmp mod_count
 mod_done
 	rts
+
+; Kurzes Beben über die Feinscroll-Register, ein Wert je Frame.
+; Beide Richtungen nur weg von der Ruhelage: waagerecht nach rechts, senkrecht
+; nach unten. Unter 3 zeigt der TED unten eine 26. Zeile aus dem Speicher dahinter.
+shake
+	ldy #0
+shake_frame
+	sty shake_i
+	ldx #1
+	jsr wait_frames
+	ldy shake_i
+	lda ted_ctrl2
+	and #%11111000
+	ora shake_x,y
+	sta ted_ctrl2
+	lda ted_ctrl1
+	and #%11111000
+	ora shake_y,y
+	sta ted_ctrl1
+	iny
+	cpy #shake_y - shake_x
+	bne shake_frame
+	rts
+
+shake_x
+	!byte 4, 0, 3, 0, 2, 0, 1, 0, 1, 0
+shake_y
+	!byte 7, 3, 6, 3, 5, 3, 4, 3, 4, 3

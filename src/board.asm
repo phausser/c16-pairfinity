@@ -209,9 +209,12 @@ pick_second
 	jsr wait_frames
 	ldx open1
 	ldy open2
+	lda #0
+	sta was_pair
 	lda board,x
 	cmp board,y
 	bne pick_close
+	inc was_pair
 	lda #0			; Paar: beide Plätze leeren
 	sta board,x
 	sta board,y
@@ -227,6 +230,10 @@ pick_close
 	ldx #$ff
 	stx open2
 	jsr draw_index
+	lda was_pair
+	beq pick_settle
+	jsr shake
+pick_settle
 	jmp settle_board
 pick_done
 	rts

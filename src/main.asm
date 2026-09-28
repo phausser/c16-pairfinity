@@ -51,6 +51,8 @@ bg_timer   = $0446
 bg_row_byte = $0447
 score      = $0448		; 3 Ziffern, höchste zuerst
 game_over  = $044b
+was_pair   = $044c
+shake_i    = $044d
 scr        = $fb
 colr       = $fd
 
@@ -89,11 +91,11 @@ start
 	sta ted_bg
 	sta ted_border
 	lda ted_ctrl1
-	and #%10011111
-	ora #%00010000
+	and #%10011000
+	ora #%00010011		; Feinscroll senkrecht 3 ist die Ruhelage
 	sta ted_ctrl1
 	lda ted_ctrl2
-	and #%01101111
+	and #%01101000		; waagerecht 0
 	sta ted_ctrl2
 	lda ted_misc1
 	and #%11111011		; Zeichensatz aus dem RAM
