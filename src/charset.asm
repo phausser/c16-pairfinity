@@ -94,7 +94,7 @@
 	!byte $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $00, $00, $81, $c3, $e7, $ff, $ff, $ff
 	!byte $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-; Ziffern 0–9, dann A E L O P R V
+; Ziffern 0–9, dann A E G M O P R S T V
 	!byte $7c, $c6, $ce, $d6, $e6, $c6, $7c, $00	; 0
 	!byte $18, $38, $78, $18, $18, $18, $7e, $00	; 1
 	!byte $7c, $c6, $06, $1c, $70, $c0, $fe, $00	; 2
@@ -107,8 +107,11 @@
 	!byte $7c, $c6, $c6, $7e, $06, $0c, $78, $00	; 9
 	!byte $38, $6c, $c6, $c6, $fe, $c6, $c6, $00	; A
 	!byte $fe, $c0, $c0, $fc, $c0, $c0, $fe, $00	; E
-	!byte $c0, $c0, $c0, $c0, $c0, $c0, $fe, $00	; L
+	!byte $7c, $c6, $c0, $de, $c6, $c6, $7c, $00	; G
+	!byte $c6, $ee, $fe, $d6, $c6, $c6, $c6, $00	; M
 	!byte $7c, $c6, $c6, $c6, $c6, $c6, $7c, $00	; O
 	!byte $fc, $c6, $c6, $fc, $c0, $c0, $c0, $00	; P
 	!byte $fc, $c6, $c6, $fc, $d8, $cc, $c6, $00	; R
+	!byte $7c, $c6, $c0, $7c, $06, $c6, $7c, $00	; S
+	!byte $fc, $30, $30, $30, $30, $30, $30, $00	; T
 	!byte $c6, $c6, $c6, $c6, $6c, $38, $10, $00	; V

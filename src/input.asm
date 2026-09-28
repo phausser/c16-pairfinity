@@ -14,10 +14,10 @@ read_edges
 
 read_dirs
 	lda #$ff		; keine Tastaturzeile, sonst stört sie den Joystick
-	sta $fd30
+	sta key_select
 	ldx #$fa		; Joystick 1
-	stx $ff08
-	lda $ff08
+	stx ted_keys
+	lda ted_keys
 	eor #$ff
 	sta key
 	and #$0f
@@ -30,10 +30,10 @@ read_dirs
 	sta dirs
 joy_no_fire
 	lda #$df		; Tastaturzeile 5: runter Bit 0, hoch Bit 3
-	sta $fd30
+	sta key_select
 	lda #$ff
-	sta $ff08
-	lda $ff08
+	sta ted_keys
+	lda ted_keys
 	eor #$ff
 	sta key
 	and #$01
@@ -50,10 +50,10 @@ key_not_down
 	sta dirs
 key_not_up
 	lda #$bf		; Tastaturzeile 6: links Bit 0, rechts Bit 3
-	sta $fd30
+	sta key_select
 	lda #$ff
-	sta $ff08
-	lda $ff08
+	sta ted_keys
+	lda ted_keys
 	eor #$ff
 	sta key
 	and #$01
@@ -70,17 +70,17 @@ key_not_left
 	sta dirs
 key_not_right
 	lda #$7f		; Tastaturzeile 7: Leertaste Bit 4
-	sta $fd30
+	sta key_select
 	lda #$ff
-	sta $ff08
-	lda $ff08
+	sta ted_keys
+	lda ted_keys
 	and #$10
 	beq key_fire
 	lda #$fe		; Tastaturzeile 0: Return Bit 1
-	sta $fd30
+	sta key_select
 	lda #$ff
-	sta $ff08
-	lda $ff08
+	sta ted_keys
+	lda ted_keys
 	and #$02
 	bne key_no_fire
 key_fire

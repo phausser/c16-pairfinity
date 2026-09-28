@@ -265,14 +265,18 @@ line_lo
 line_hi
 	!for i, 0, 24 { !byte >(screen + i * 40) }
 
-; Kopfzeile über dem Raster: PAARE links, Punktzahl rechts.
+; Oben rechts: PAARE und die Punktzahl, ein Feld Abstand zu beiden Rändern.
+hud_row    = 1
+hud_col    = 30
+hud        = hud_row * 40 + hud_col
+
 draw_hud
 	ldx #4
 hud_word
 	lda word_paare,x
-	sta screen + 12,x
+	sta screen + hud,x
 	lda #hud_color
-	sta color + 12,x
+	sta color + hud,x
 	dex
 	bpl hud_word
 	; weiter in draw_score
@@ -283,9 +287,9 @@ score_digit
 	lda score,x
 	clc
 	adc #ch_0
-	sta screen + 24,x
+	sta screen + hud + 6,x
 	lda #hud_color
-	sta color + 24,x
+	sta color + hud + 6,x
 	dex
 	bpl score_digit
 	rts
@@ -305,22 +309,47 @@ add_digit
 add_done
 	jmp draw_score
 
-; VOLL unter dem Raster, mittig.
-draw_full
-	ldx #3
-full_letter
-	lda word_voll,x
-	sta screen + 24 * 40 + 17,x
+; Schriftzug oben links, auf der Höhe der Punktzahl. A = Offset in words.
+show_label
+	tax
+	ldy words,x		; Spalte
+	lda words+1,x		; Länge
+	sta label_len
+label_char
+	lda words+2,x
+	sta screen + hud_row * 40,y
 	lda #hud_color
-	sta color + 24 * 40 + 17,x
-	dex
-	bpl full_letter
+	sta color + hud_row * 40,y
+	inx
+	iny
+	dec label_len
+	bne label_char
+	rts
+
+; Die Stelle des Schriftzugs wieder Hintergrund.
+hide_label
+	lda #0
+	sta sx
+	lda #hud_row
+	sta cur_y
+	jsr line_ptr
+	ldy #9
+hide_cell
+	tya
+	jsr bg_cell
+	dey
+	bne hide_cell
 	rts
 
 word_paare
 	!byte ch_p, ch_a, ch_a, ch_r, ch_e
-word_voll
-	!byte ch_v, ch_o, ch_l, ch_l
+
+; Je Wort: Spalte, Länge, Zeichen. Höchstens 9 Zeichen ab Spalte 1.
+words
+word_start = * - words
+	!byte 1, 5, ch_s, ch_t, ch_a, ch_r, ch_t
+word_game_over = * - words
+	!byte 1, 9, ch_g, ch_a, ch_m, ch_e, 0, ch_o, ch_v, ch_e, ch_r
 
 ; Erstes Zeichen und Flächenfarbe der Motive 1–8.
 fruit_char

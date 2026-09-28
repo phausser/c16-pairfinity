@@ -4,7 +4,7 @@
 Rücken: '#' ist ein gesetztes Pixel.
 Früchte: 'X' ist die schwarze Silhouette (gelöscht), '.' die Fläche (gesetzt).
 Die Silhouette bleibt in Spalte und Zeile 2 bis 21.
-Schrift: je 8×8, '#' ist gesetzt. Ziffern ab $52, danach A E L O P R V.
+Schrift: je 8×8, '#' ist gesetzt. Ziffern ab $52, danach A E G M O P R S T V.
 """
 
 BACK = [
@@ -367,14 +367,24 @@ GLYPHS = {
         '#######.',
         '........',
     ],
-    'L': [
+    'G': [
+        '.#####..',
+        '##...##.',
         '##......',
-        '##......',
-        '##......',
-        '##......',
-        '##......',
-        '##......',
+        '##.####.',
+        '##...##.',
+        '##...##.',
+        '.#####..',
+        '........',
+    ],
+    'M': [
+        '##...##.',
+        '###.###.',
         '#######.',
+        '##.#.##.',
+        '##...##.',
+        '##...##.',
+        '##...##.',
         '........',
     ],
     'O': [
@@ -405,6 +415,26 @@ GLYPHS = {
         '##.##...',
         '##..##..',
         '##...##.',
+        '........',
+    ],
+    'S': [
+        '.#####..',
+        '##...##.',
+        '##......',
+        '.#####..',
+        '.....##.',
+        '##...##.',
+        '.#####..',
+        '........',
+    ],
+    'T': [
+        '######..',
+        '..##....',
+        '..##....',
+        '..##....',
+        '..##....',
+        '..##....',
+        '..##....',
         '........',
     ],
     'V': [
@@ -459,7 +489,7 @@ def main():
         lines.append(f'; {n} {name.capitalize()}')
         b = chars(grid, lambda c: c == '.')
         lines += [emit(b[i:i + 8]) for i in range(0, 72, 8)]
-    lines.append('; Ziffern 0–9, dann A E L O P R V')
+    lines.append('; Ziffern 0–9, dann A E G M O P R S T V')
     for name, rows in GLYPHS.items():
         assert len(rows) == 8 and all(len(r) == 8 for r in rows), name
         lines.append(emit([sum(0x80 >> x for x, c in enumerate(r) if c == '#') for r in rows]) + f'\t; {name}')

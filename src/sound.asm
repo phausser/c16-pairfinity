@@ -1,11 +1,12 @@
 ; TED-Ton. Stimme 1 spielt Tonfolgen, Stimme 2 klickt beim Aufdecken und rauscht beim Fallen.
 ; Registerwert für f Hz (PAL): 1024 - 111861 / f.
 
+!addr {
 ted_freq1  = $ff0e		; Stimme 1, untere 8 Bit
 ted_freq2  = $ff0f		; Stimme 2, untere 8 Bit
 ted_freq2h = $ff10		; Bits 0–1: Stimme 2, obere 2 Bit
 ted_sound  = $ff11		; Bits 0–3 Lautstärke, 4 Stimme 1, 5 Rechteck und 6 Rauschen auf Stimme 2
-				; $ff12 Bits 0–1: Stimme 1, obere 2 Bit
+}				; $ff12 Bits 0–1: Stimme 1, obere 2 Bit
 
 volume     = 6
 

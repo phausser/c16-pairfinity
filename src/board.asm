@@ -51,7 +51,6 @@ shuffle
 	sta open2
 	lda #0
 	sta phase
-	sta prev_dirs
 	sta game_over
 	sta score
 	sta score+1
@@ -110,14 +109,14 @@ random_next
 
 ; Startwert aus der Rasterposition. 0 wird zu 1.
 seed_random
-	lda $ff1e
+	lda ted_hpos
 	sta rnd
 	ldx #0
 seed_wait
 	dex
 	bne seed_wait
-	lda $ff1d
-	eor $ff1e
+	lda ted_vpos
+	eor ted_hpos
 	sta rnd+1
 	ora rnd
 	bne seed_done
@@ -260,11 +259,11 @@ draw_index
 
 ; Wartet X Bildschirme. Hintergrundmuster und Ton laufen dabei weiter.
 wait_frames
-	lda $ff1d
+	lda ted_vpos
 	cmp #204
 	beq wait_frames
 wait_line
-	lda $ff1d
+	lda ted_vpos
 	cmp #204
 	bne wait_line
 	txa

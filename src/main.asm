@@ -1,11 +1,16 @@
 ; Endlos-Memory. Raster 4×6, Paare verschwinden, Spalten packen sich, neue Karten fallen.
 
+!addr {
 screen     = $0c00
 color      = $0800
 ted_ctrl1  = $ff06
 ted_ctrl2  = $ff07
 ted_misc1  = $ff12
 ted_misc2  = $ff13
+ted_keys   = $ff08		; Joystick und Tastatur lesen
+key_select = $fd30		; Tastaturzeile wählen
+ted_vpos   = $ff1d		; Rasterzeile, untere 8 Bit
+ted_hpos   = $ff1e		; Rasterspalte
 ted_bg     = $ff15
 ted_border = $ff19
 
@@ -57,23 +62,28 @@ snd_pos    = $044e
 snd_time   = $044f
 tick_time  = $0450
 tick_x     = $0451
+label_len  = $0452
 scr        = $fb
 colr       = $fd
+charset    = $3000
+}
 
 back_char  = 1
 back_color = $51
 hud_color  = $71
-ch_0       = $52		; Ziffern, danach A E L O P R V
+ch_0       = $52		; Ziffern, danach A E G M O P R S T V
 ch_a       = $5c
 ch_e       = $5d
-ch_l       = $5e
-ch_o       = $5f
-ch_p       = $60
-ch_r       = $61
-ch_v       = $62
+ch_g       = $5e
+ch_m       = $5f
+ch_o       = $60
+ch_p       = $61
+ch_r       = $62
+ch_s       = $63
+ch_t       = $64
+ch_v       = $65
 cursor_lum = $10		; Cursor: eine Helligkeitsstufe heller
 
-charset    = $3000
 bg_char    = $7f		; $ff ist dasselbe Zeichen invertiert
 bg_color   = $21
 bg_speed   = 4		; Frames je Pixel
@@ -113,6 +123,8 @@ start
 	jsr bg_glyph
 	jsr sound_init
 	jsr seed_random
+	lda #$ff		; alles gilt als gehalten, bis es losgelassen wird
+	sta prev_dirs
 new_game
 	jsr clear_screen
 	jsr init_board
@@ -121,6 +133,10 @@ new_game
 !ifdef PREVIEW {
 	jsr draw_preview
 }
+	lda #word_start
+	jsr show_label
+	jsr wait_fire
+	jsr hide_label
 loop
 	ldx #1
 	jsr wait_frames
@@ -161,20 +177,28 @@ not_fire
 	jsr wait_frames
 	jmp loop
 
-; Kein Platz mehr: VOLL zeigen, auf Feuer warten, neu geben.
+; Kein Platz mehr: GAME OVER zeigen, auf Feuer warten, neu geben.
 game_end
-	jsr draw_full
-wait_restart
+	lda #word_game_over
+	jsr show_label
+	jsr wait_fire
+	jmp new_game
+
+; Wartet auf einen neuen Druck auf Feuer.
+wait_fire
 	ldx #1
 	jsr wait_frames
 	jsr read_edges
 	and #$10
-	beq wait_restart
-	jmp new_game
+	beq wait_fire
+	rts
 
 	!source "src/board.asm"
 	!source "src/draw.asm"
 	!source "src/input.asm"
 	!source "src/anim.asm"
 	!source "src/sound.asm"
+!if * > charset {
+	!error "Das Programm reicht in den Zeichensatz bei $3000."
+}
 	!source "src/charset.asm"

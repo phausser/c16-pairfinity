@@ -12,10 +12,11 @@ Nötig sind [ACME](https://sourceforge.net/projects/acme-crossass/), Python 3 un
 make           # baut memory.prg
 make run       # startet es in VICE als C16
 make preview   # zeigt alle Früchte aufgedeckt
+make lint      # baut streng und prüft Stil, Labels und Speicher
 ```
 
 ## Steuerung
 
-Joystick in Port 1 oder Pfeiltasten.
+Joystick in Port 1 oder Pfeiltasten. Feuer, Leertaste oder Return startet und deckt Karten auf.
 
 Regeln und Aufbau stehen in [SPEC.md](SPEC.md), der Fortschritt in [TODO.md](TODO.md).

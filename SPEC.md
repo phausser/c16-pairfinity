@@ -19,7 +19,7 @@ Start: 12 Karten, untenbündig, jede Spalte drei hoch. Die Auslage enthält jede
 
 Punktzahl ist die Anzahl gefundener Paare.
 
-Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz. Die Paar-Zahl bleibt stehen. Feuer oder Leertaste gibt neu.
+Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz. Die Paar-Zahl bleibt stehen, darüber steht `GAME OVER`. Feuer gibt neu.
 
 ## Spielfeld
 
@@ -34,7 +34,7 @@ Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Rast
 
 `col` läuft von 0 links nach 3 rechts. `row` 0 ist der unterste Platz der Spalte, `row` 5 der oberste. Eine Spalte der Höhe `h` belegt die Reihen `0 .. h-1`.
 
-Kopfzeile in Bildschirmzeile 0, bündig über dem Raster: `PAARE` ab Spalte 12, drei Ziffern in den Spalten 24–26. Bei Spielende steht `VOLL` in Bildschirmzeile 24, Spalten 17–20.
+Anzeige in Bildschirmzeile 1, ein Feld Abstand zum oberen Rand. Rechts `PAARE` und drei Ziffern in den Spalten 30–38. Links ab Spalte 1 steht vor jedem Spiel `START` und bei Spielende `GAME OVER`; während des Spiels ist die Stelle Hintergrund. Zeile 0 ist reiner Hintergrund.
 
 Zeichen im Satz:
 
@@ -43,7 +43,7 @@ Zeichen im Satz:
 | `$00` | leer |
 | `$01`–`$09` | Kartenrücken, 3×3, zeilenweise von links nach rechts |
 | `$0A`–`$51` | Früchte 1–8, je 3×3, dieselbe Reihenfolge. Motiv `n` beginnt bei `$0A + (n-1)*9` |
-| danach | Ziffern `0`–`9` und die Buchstaben `A E L O P R V` |
+| danach | Ziffern `0`–`9` ab `$52` und die Buchstaben `A E G M O P R S T V` |
 
 Offene Karte, nach der Vorlage: die Fläche ist die Fruchtfarbe, die Frucht selbst ist eine geschlossene schwarze Silhouette. Apfel, Orange, Birne und Banane folgen dem Blatt direkt (Stiel und Blatt am Apfel und an der Orange, Stiel an der Birne, Sichel der Banane). Dazu Traube, Kirsche, Zitrone und Erdbeere, dieselbe Art Fläche und Silhouette.
 
@@ -92,7 +92,7 @@ Der Cursor steht auf einer liegenden Karte. Ein Schritt sucht in dieser Richtung
 3. Beide bleiben etwa 30 Frames offen.
 4. Treffer: beide Plätze leeren, dann jede Spalte animiert nach unten packen. Daneben: beide wieder verdecken.
 5. Hat keine Spalte Platz, Spielende. Sonst Motiv und Spalte wählen und die Karte von über dem Raster auf ihren Platz fallen lassen.
-6. Bei Spielende wartet das Programm auf Feuer oder Leertaste und gibt dann neu, Punktzahl auf 0.
+6. Bei Spielende steht `GAME OVER`. Feuer gibt neu, Punktzahl auf 0, und `START` wartet auf das nächste Feuer.
 
 Packen: solange in einer Spalte über einem leeren Platz eine Karte liegt, rückt jede solche Karte um einen Platz nach unten. Dieser eine Platz wird animiert (vier Zeichenzeilen, weil die Lücke dazwischen mitzählt), danach der nächste. Beide Karten eines Paares können in derselben Spalte liegen.
 
