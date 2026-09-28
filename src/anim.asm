@@ -211,6 +211,7 @@ drop_fall
 	sta clear_end		; frei gewordene Zeile über der Karte
 	jsr clear_rows
 drop_draw
+	jsr tick
 	lda #back_char
 	ldx #back_color
 	jsr draw_at

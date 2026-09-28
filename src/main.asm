@@ -53,6 +53,9 @@ score      = $0448		; 3 Ziffern, höchste zuerst
 game_over  = $044b
 was_pair   = $044c
 shake_i    = $044d
+snd_pos    = $044e
+snd_time   = $044f
+tick_time  = $0450
 scr        = $fb
 colr       = $fd
 
@@ -107,6 +110,7 @@ start
 	lda #bg_speed
 	sta bg_timer
 	jsr bg_glyph
+	jsr sound_init
 	jsr seed_random
 new_game
 	jsr clear_screen
@@ -171,4 +175,5 @@ wait_restart
 	!source "src/draw.asm"
 	!source "src/input.asm"
 	!source "src/anim.asm"
+	!source "src/sound.asm"
 	!source "src/charset.asm"

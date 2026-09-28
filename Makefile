@@ -2,7 +2,7 @@
 
 all: memory.prg
 
-SRC = src/main.asm src/charset.asm src/board.asm src/draw.asm src/input.asm src/anim.asm
+SRC = src/main.asm src/charset.asm src/board.asm src/draw.asm src/input.asm src/anim.asm src/sound.asm
 
 memory.prg: $(SRC)
 	acme -f cbm --cpu 6502 -o memory.prg src/main.asm

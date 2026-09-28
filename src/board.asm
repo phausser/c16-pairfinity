@@ -187,7 +187,9 @@ move_stay
 ; Feuer auf dem Cursor. Erste Karte aufdecken, oder die zweite und den Zug auflösen.
 pick
 	lda cursor_col
-	bmi pick_done
+	bpl pick_cursor
+	rts			; kein Cursor
+pick_cursor
 	lda cursor_row
 	asl
 	asl
@@ -231,9 +233,14 @@ pick_close
 	stx open2
 	jsr draw_index
 	lda was_pair
-	beq pick_settle
+	beq pick_miss
+	lda #snd_pair
+	jsr play
 	jsr shake
-pick_settle
+	jmp settle_board
+pick_miss
+	lda #snd_miss
+	jsr play
 	jmp settle_board
 pick_done
 	rts
@@ -249,7 +256,7 @@ draw_index
 	sta draw_row
 	jmp draw_cell
 
-; Wartet X Bildschirme. Das Hintergrundmuster läuft dabei weiter.
+; Wartet X Bildschirme. Hintergrundmuster und Ton laufen dabei weiter.
 wait_frames
 	lda $ff1d
 	cmp #204
@@ -261,6 +268,7 @@ wait_line
 	txa
 	pha
 	jsr bg_tick
+	jsr sound_tick
 	pla
 	tax
 	dex
