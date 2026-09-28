@@ -36,8 +36,7 @@ draw_cell
 	tax
 	lda board,x
 	bne cell_card
-	tax			; leer: Zeichen 0, Farbe 0
-	jmp draw_card
+	jmp clear_slot
 cell_card
 	cpx open1
 	beq cell_open
@@ -69,16 +68,33 @@ cell_draw
 	jmp draw_card
 
 draw_card
+	pha
+	lda draw_col
+	jsr col_x
+	lda draw_row
+	jsr row_y
+	sta sy
+	pla
+	; weiter in draw_at
+
+; Zeichnet eine Karte bei Bildschirmspalte sx und Zeile sy (mit Vorzeichen).
+; A = erstes Zeichen, X = Farbbyte. Zeilen über Zeile 1 bleiben weg.
+draw_at
 	sta char_base
 	stx color_byte
-	jsr card_ptr
 	lda #0
 	sta idx
+	lda sy
+	sta cur_y
 	lda #3
 	sta rows_left
-card_row
+at_row
+	lda cur_y
+	bmi at_skip
+	beq at_skip		; Zeile 0 gehört der Kopfzeile
+	jsr line_ptr
 	ldy #0
-card_col
+at_col
 	lda char_base
 	clc
 	adc idx
@@ -88,80 +104,90 @@ card_col
 	inc idx
 	iny
 	cpy #3
-	bne card_col
-	lda scr
+	bne at_col
+	beq at_next
+at_skip
+	lda idx
 	clc
-	adc #40
-	sta scr
-	bcc card_scr_ok
-	inc scr+1
-card_scr_ok
-	lda colr
-	clc
-	adc #40
-	sta colr
-	bcc card_colr_ok
-	inc colr+1
-card_colr_ok
+	adc #3
+	sta idx
+at_next
+	inc cur_y
 	dec rows_left
-	bne card_row
+	bne at_row
 	rts
 
-; scr und colr zeigen auf die linke obere Zelle der Karte.
-card_ptr
-	lda #5
-	sec
-	sbc draw_row
-	asl
-	asl
-	clc
-	adc #1
-	sta sy
+; Leert den Platz draw_col/draw_row.
+clear_slot
 	lda draw_col
+	jsr col_x
+	lda draw_row
+	jsr row_y
+	pha
+	clc
+	adc #2
+	sta clear_end
+	pla
+	; weiter in clear_rows
+
+; Leert drei Zeichen breit ab Spalte sx die Zeilen A bis clear_end.
+clear_rows
+	sta cur_y
+clear_row
+	lda cur_y
+	jsr line_ptr
+	ldy #2
+	lda #0
+clear_cell
+	sta (scr),y
+	sta (colr),y
+	dey
+	bpl clear_cell
+	lda cur_y
+	cmp clear_end
+	inc cur_y
+	bcc clear_row
+	rts
+
+; A = Spalte 0–3, setzt sx auf die Bildschirmspalte.
+col_x
 	asl
 	asl
 	clc
 	adc #12
 	sta sx
-	lda #0
-	sta scr
-	sta scr+1
-	ldx sy
-	beq ptr_x
-ptr_add
-	lda scr
+	rts
+
+; A = Reihe 0–5, liefert in A die oberste Bildschirmzeile des Platzes.
+row_y
+	eor #$ff
 	clc
-	adc #40
-	sta scr
-	bcc ptr_next
-	inc scr+1
-ptr_next
-	dex
-	bne ptr_add
-ptr_x
-	lda scr
+	adc #6			; 5 - Reihe
+	asl
+	asl
+	adc #1
+	rts
+
+; A = Bildschirmzeile. scr und colr zeigen auf Spalte sx dieser Zeile.
+line_ptr
+	tax
+	lda line_lo,x
 	clc
 	adc sx
 	sta scr
-	bcc ptr_ok
-	inc scr+1
-ptr_ok
-	lda scr
-	clc
-	adc #<screen
-	pha
-	lda scr+1
-	adc #>screen
-	sta scr+1
-	pla
-	sta scr
-	lda scr
 	sta colr
-	lda scr+1
+	lda line_hi,x
+	adc #0
+	sta scr+1
 	sec
 	sbc #$04		; Farb-RAM liegt $0400 unter dem Bildschirm
 	sta colr+1
 	rts
+
+line_lo
+	!for i, 0, 24 { !byte <(screen + i * 40) }
+line_hi
+	!for i, 0, 24 { !byte >(screen + i * 40) }
 
 ; Erstes Zeichen und Flächenfarbe der Motive 1–8.
 fruit_char

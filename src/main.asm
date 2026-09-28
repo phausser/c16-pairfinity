@@ -35,6 +35,18 @@ cell_color = $0431
 shuf_i     = $0432
 shuf_n     = $0433
 rnd        = $0434		; 2 Bytes
+gap        = $0436		; 4 Bytes
+step       = $043a
+anim_col   = $043b
+anim_row   = $043c
+anim_e     = $043d
+count      = $043e
+pick_k     = $043f
+drop_cell  = $0440
+drop_motif = $0441
+target     = $0442
+cur_y      = $0443
+clear_end  = $0444
 scr        = $fb
 colr       = $fd
 
@@ -143,4 +155,5 @@ settle_inner
 	!source "src/board.asm"
 	!source "src/draw.asm"
 	!source "src/input.asm"
+	!source "src/anim.asm"
 	!source "src/charset.asm"

@@ -210,17 +210,7 @@ pick_close
 	ldx #$ff
 	stx open2
 	jsr draw_index
-	lda cursor_row
-	asl
-	asl
-	ora cursor_col
-	tax
-	lda board,x
-	bne pick_done
-	jsr cursor_home		; Platz unter dem Cursor ist leer
-	lda cursor_col
-	bmi pick_done
-	jmp draw_cursor_cell
+	jmp settle_board
 pick_done
 	rts
 
