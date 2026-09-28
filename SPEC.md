@@ -49,7 +49,7 @@ Offene Karte, nach der Vorlage: die Fläche ist die Fruchtfarbe, die Frucht selb
 
 Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Hintergrund und Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Silhouette gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Silhouette liegt in der Mitte der Karte, mit mindestens zwei Pixeln Farbrand an jedem Rand. Der Kartenrücken ist für alle Motive gleich und trägt die Fruchtfarbe nicht.
 
-Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit bleibt unter 7, damit die Fläche nicht ausbleicht. Kartenrücken überall `$51`. Der Cursor setzt auf dieser Karte Bit 7; die schwarze Frucht bleibt schwarz, die Fläche blinkt. Die acht Motive:
+Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit bleibt unter 7, damit die Fläche nicht ausbleicht; nur der Cursor darf auf 7 gehen. Kartenrücken überall `$51`. Der Cursor hebt auf dieser Karte die Helligkeit um eine Stufe, der Rücken wird hellgrau `$61`; die schwarze Frucht bleibt schwarz. Nichts blinkt. Die acht Motive:
 
 | Motiv | Fläche | Byte | Silhouette |
 | --- | --- | --- | --- |

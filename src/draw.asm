@@ -27,7 +27,7 @@ draw_cursor_cell
 	; weiter in draw_cell
 
 ; Zeichnet den Platz draw_col/draw_row: leer, verdeckt oder offen.
-; Steht der Cursor darauf, blinkt die Fläche.
+; Steht der Cursor darauf, ist die Fläche eine Stufe heller.
 draw_cell
 	lda draw_row
 	asl
@@ -60,7 +60,8 @@ cell_cursor
 	cmp cursor_row
 	bne cell_draw
 	lda cell_color
-	ora #cursor_bit
+	clc
+	adc #cursor_lum
 	sta cell_color
 cell_draw
 	pla
@@ -117,7 +118,7 @@ at_next
 	bne at_row
 	rts
 
-; Leert den Platz draw_col/draw_row.
+; Füllt den Platz draw_col/draw_row mit Hintergrund.
 clear_slot
 	lda draw_col
 	jsr col_x
@@ -130,17 +131,18 @@ clear_slot
 	pla
 	; weiter in clear_rows
 
-; Leert drei Zeichen breit ab Spalte sx die Zeilen A bis clear_end.
+; Füllt drei Zeichen breit ab Spalte sx die Zeilen A bis clear_end mit Hintergrund.
 clear_rows
 	sta cur_y
 clear_row
 	lda cur_y
 	jsr line_ptr
 	ldy #2
-	lda #0
 clear_cell
-	sta (scr),y
-	sta (colr),y
+	tya
+	clc
+	adc sx
+	jsr bg_cell
 	dey
 	bpl clear_cell
 	lda cur_y
@@ -183,6 +185,80 @@ line_ptr
 	sbc #$04		; Farb-RAM liegt $0400 unter dem Bildschirm
 	sta colr+1
 	rts
+
+; Ganzer Schirm mit dem Schachbrett.
+clear_screen
+	lda #0
+	sta sx
+	sta cur_y
+screen_row
+	lda cur_y
+	jsr line_ptr
+	ldy #39
+screen_cell
+	tya
+	jsr bg_cell
+	dey
+	bpl screen_cell
+	inc cur_y
+	lda cur_y
+	cmp #25
+	bne screen_row
+	rts
+
+; Schreibt Hintergrund nach (scr),y. A = Bildschirmspalte, cur_y die Zeile.
+; Auf Feldern mit ungerader Summe steht das invertierte Zeichen.
+bg_cell
+	eor cur_y
+	and #1
+	beq bg_cell_even
+	lda #bg_char | $80
+	bne bg_cell_put
+bg_cell_even
+	lda #bg_char
+bg_cell_put
+	sta (scr),y
+	lda #bg_color
+	sta (colr),y
+	rts
+
+; Schachbrett aus 8×8-Feldern, das jeden Pixel-Schritt nach rechts oben wandert.
+; Das Muster wiederholt sich nach 16 Pixeln, bg_step läuft 0–15.
+bg_tick
+	dec bg_timer
+	bne bg_done
+	lda #bg_speed
+	sta bg_timer
+	lda bg_step
+	clc
+	adc #1
+	and #15
+	sta bg_step
+bg_glyph
+	ldx bg_step
+	lda bg_mask,x
+	sta bg_row_byte
+	ldy #0
+bg_row
+	tya
+	clc
+	adc bg_step
+	and #8			; untere Hälfte des Musters: Zeile invertiert
+	beq bg_plain
+	lda #$ff
+bg_plain
+	eor bg_row_byte
+	sta charset + bg_char * 8,y
+	iny
+	cpy #8
+	bne bg_row
+bg_done
+	rts
+
+; Obere Musterzeile, um bg_step Pixel nach rechts geschoben.
+bg_mask
+	!byte $00, $80, $c0, $e0, $f0, $f8, $fc, $fe
+	!byte $ff, $7f, $3f, $1f, $0f, $07, $03, $01
 
 line_lo
 	!for i, 0, 24 { !byte <(screen + i * 40) }

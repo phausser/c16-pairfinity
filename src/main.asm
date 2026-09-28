@@ -47,12 +47,20 @@ drop_motif = $0441
 target     = $0442
 cur_y      = $0443
 clear_end  = $0444
+bg_step    = $0445
+bg_timer   = $0446
+bg_row_byte = $0447
 scr        = $fb
 colr       = $fd
 
 back_char  = 1
 back_color = $51
-cursor_bit = $80
+cursor_lum = $10		; Cursor: eine Helligkeitsstufe heller
+
+charset    = $3000
+bg_char    = $7f		; $ff ist dasselbe Zeichen invertiert
+bg_color   = $21
+bg_speed   = 4		; Frames je Pixel
 
 *=$1001
 	!word basend
@@ -82,6 +90,11 @@ start
 	sta ted_misc1
 	lda #$30		; Zeichensatz bei $3000
 	sta ted_misc2
+	lda #0
+	sta bg_step
+	lda #bg_speed
+	sta bg_timer
+	jsr bg_glyph
 	jsr clear_screen
 	jsr seed_random
 	jsr init_board
@@ -90,6 +103,8 @@ start
 	jsr draw_preview
 }
 loop
+	ldx #1
+	jsr wait_frames
 	jsr read_edges
 	beq loop
 	sta edges
@@ -121,36 +136,9 @@ not_right
 	beq not_fire
 	jsr pick
 not_fire
-	jsr settle
+	ldx #3			; kurz warten, damit ein prellender Taster nicht zweimal zählt
+	jsr wait_frames
 	jmp loop
-
-clear_screen
-	ldx #0
-	lda #0
-clear_loop
-	sta screen,x
-	sta screen+$100,x
-	sta screen+$200,x
-	sta screen+$300,x
-	sta color,x
-	sta color+$100,x
-	sta color+$200,x
-	sta color+$300,x
-	inx
-	bne clear_loop
-	rts
-
-; Kurze Pause, damit ein prellender Taster nicht zweimal zählt.
-settle
-	ldx #$18
-settle_outer
-	ldy #0
-settle_inner
-	dey
-	bne settle_inner
-	dex
-	bne settle_outer
-	rts
 
 	!source "src/board.asm"
 	!source "src/draw.asm"

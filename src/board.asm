@@ -225,7 +225,7 @@ draw_index
 	sta draw_row
 	jmp draw_cell
 
-; Wartet X Bildschirme.
+; Wartet X Bildschirme. Das Hintergrundmuster läuft dabei weiter.
 wait_frames
 	lda $ff1d
 	cmp #204
@@ -234,6 +234,11 @@ wait_line
 	lda $ff1d
 	cmp #204
 	bne wait_line
+	txa
+	pha
+	jsr bg_tick
+	pla
+	tax
 	dex
 	bne wait_frames
 	rts
