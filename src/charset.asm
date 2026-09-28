@@ -4,15 +4,15 @@
 *=$3000
 	!fill 8, 0
 ; Kartenrücken
-	!byte $ff, $ff, $ff, $ff, $f0, $f0, $f3, $f3
-	!byte $ff, $ff, $ff, $ff, $00, $00, $ff, $e7
-	!byte $ff, $ff, $ff, $ff, $0f, $0f, $cf, $cf
-	!byte $f3, $f3, $f3, $f2, $f2, $f3, $f3, $f3
-	!byte $c3, $81, $00, $00, $00, $00, $81, $c3
-	!byte $cf, $cf, $cf, $4f, $4f, $cf, $cf, $cf
-	!byte $f3, $f3, $f0, $f0, $ff, $ff, $ff, $ff
-	!byte $e7, $ff, $00, $00, $ff, $ff, $ff, $ff
-	!byte $cf, $cf, $0f, $0f, $ff, $ff, $ff, $ff
+	!byte $7f, $ff, $f3, $e6, $cc, $d9, $f3, $e6
+	!byte $ff, $ff, $33, $66, $cc, $99, $33, $66
+	!byte $fe, $ff, $33, $67, $cf, $9b, $33, $67
+	!byte $cc, $d9, $f3, $e6, $cc, $d9, $f3, $e6
+	!byte $cc, $99, $33, $66, $cc, $99, $33, $66
+	!byte $cf, $9b, $33, $67, $cf, $9b, $33, $67
+	!byte $cc, $d9, $f3, $e6, $cc, $d9, $ff, $7f
+	!byte $cc, $99, $33, $66, $cc, $99, $ff, $ff
+	!byte $cf, $9b, $33, $67, $cf, $9b, $ff, $fe
 ; 1 Apfel
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fc
 	!byte $ff, $ff, $ff, $dc, $d8, $e0, $e3, $2c
