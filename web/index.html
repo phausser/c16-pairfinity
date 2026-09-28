@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pairfinity</title>
+<style>
+  body { margin: 0; background: #000; color: #ccc; font-family: system-ui, sans-serif; }
+  main { max-width: 800px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.4rem; color: #fff; }
+  #frame { width: 100%; aspect-ratio: 4 / 3; }
+  a { color: #e7c870; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pairfinity</h1>
+  <p>Endlos-Memory für den Commodore 16. Pfeiltasten bewegen den Cursor.</p>
+  <div id="frame"><div id="game"></div></div>
+  <p><a href="memory.prg">memory.prg</a> herunterladen · <a href="https://github.com/phausser/c16-pairfinity">Quelltext</a></p>
+</main>
+<script>
+  EJS_player = '#game';
+  EJS_core = 'plus4';
+  EJS_gameUrl = 'memory.prg';
+  EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+  EJS_defaultOptions = { 'vice_plus4_model': 'C16 PAL', 'vice_joyport': '1' };
+  EJS_color = '#e7c870';
+</script>
+<script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+</body>
+</html>
