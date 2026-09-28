@@ -1,0 +1,290 @@
+#!/usr/bin/env python3
+"""Schreibt src/charset.asm aus der Pixelkunst unten.
+
+Rücken: '#' ist ein gesetztes Pixel.
+Früchte: 'X' ist die schwarze Silhouette (gelöscht), '.' die Fläche (gesetzt).
+Die Silhouette bleibt in Spalte und Zeile 2 bis 21.
+"""
+
+BACK = [
+    '########################',
+    '########################',
+    '########################',
+    '########################',
+    '####................####',
+    '####................####',
+    '####..############..####',
+    '####..#####..#####..####',
+    '####..####....####..####',
+    '####..###......###..####',
+    '####..##........##..####',
+    '####..#..........#..####',
+    '####..#..........#..####',
+    '####..##........##..####',
+    '####..###......###..####',
+    '####..####....####..####',
+    '####..#####..#####..####',
+    '####..############..####',
+    '####................####',
+    '####................####',
+    '########################',
+    '########################',
+    '########################',
+    '########################',
+]
+
+FRUITS = {
+    'apfel': [
+        '........................',
+        '........................',
+        '.................XXXX...',
+        '..........X...XXXXXX....',
+        '..........X..XXXXXX.....',
+        '...........XXXXXX.......',
+        '...........XXX..........',
+        '......XXXX.X..XXXX......',
+        '....XXXXXXXX.XXXXXXX....',
+        '...XXXXXXXXXXXXXXXXXX...',
+        '...XXXXXXXXXXXXXXXXXX...',
+        '...XXXXXXXXXXXXXXXXXX...',
+        '...XXXXXXXXXXXXXXXXXX...',
+        '...XXXXXXXXXXXXXXXXXX...',
+        '...XXXXXXXXXXXXXXXXXX...',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '.....XXXXXXXXXXXXXX.....',
+        '.....XXXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXX......',
+        '.......XXXX..XXXX.......',
+        '........................',
+        '........................',
+        '........................',
+    ],
+    'orange': [
+        '........................',
+        '........................',
+        '................XXX.....',
+        '...........XX.XXXXXXX...',
+        '...........XXXXXXXXX....',
+        '...........XX...........',
+        '.........XXXXXX.........',
+        '.......XXXXXXXXXX.......',
+        '......XXXXXXXXXXXX......',
+        '.....XXXXXXXXXXXXXX.....',
+        '.....XXXXXXXXXXXXXX.....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '.....XXXXXXXXXXXXXX.....',
+        '.....XXXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXX......',
+        '.......XXXXXXXXXX.......',
+        '.........XXXXXX.........',
+        '........................',
+        '........................',
+    ],
+    'birne': [
+        '........................',
+        '........................',
+        '..........X.............',
+        '...........X............',
+        '...........X............',
+        '...........XX...........',
+        '..........XXXX..........',
+        '.........XXXXXX.........',
+        '.........XXXXXX.........',
+        '.........XXXXXX.........',
+        '........XXXXXXXX........',
+        '........XXXXXXXX........',
+        '.......XXXXXXXXXX.......',
+        '......XXXXXXXXXXXX......',
+        '.....XXXXXXXXXXXXXX.....',
+        '.....XXXXXXXXXXXXXX.....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '.....XXXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXX......',
+        '........XXX..XXX........',
+        '........................',
+        '........................',
+    ],
+    'banane': [
+        '........................',
+        '........................',
+        '........................',
+        '...............XXX......',
+        '................XX......',
+        '................XX......',
+        '................XXX.....',
+        '................XXXX....',
+        '...............XXXXX....',
+        '...............XXXXXX...',
+        '...............XXXXXX...',
+        '...............XXXXXX...',
+        '..............XXXXXXX...',
+        '..............XXXXXXX...',
+        '.............XXXXXXXX...',
+        '............XXXXXXXX....',
+        '..........XXXXXXXXX.....',
+        '........XXXXXXXXXX......',
+        '.....XXXXXXXXXXX........',
+        '...XXXXXXXXXXX..........',
+        '...XXXXXXX..............',
+        '........................',
+        '........................',
+        '........................',
+    ],
+    'traube': [
+        '........................',
+        '........................',
+        '......XXX...............',
+        '.....XXXXXXXX...........',
+        '......XXXXXXX...........',
+        '........XXX.X...........',
+        '.....XXX.XXXXXXX.XXX....',
+        '....XXXXXXXXXXXXXXXXX...',
+        '....XXXXXXXXXXXXXXXXX...',
+        '....XXXXXXXXXXXXXXXXX...',
+        '.....XXXXXXXXXXXXXXX....',
+        '......XXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXXX.....',
+        '.......XXXXXXXXXXX......',
+        '........XXXXXXXXX.......',
+        '........XXXXXXXXX.......',
+        '........XXXXXXXXX.......',
+        '.........XXXXXXX........',
+        '..........XXXXX.........',
+        '..........XXXXX.........',
+        '...........XXX..........',
+        '........................',
+        '........................',
+    ],
+    'kirsche': [
+        '........................',
+        '........................',
+        '.................XXXX...',
+        '..............XXXXXX....',
+        '.............X.XXX......',
+        '............X..X........',
+        '...........X...X........',
+        '..........X.....X.......',
+        '.........X......X.......',
+        '........X.......X.......',
+        '........X.......X.......',
+        '.......X........X.......',
+        '.......X.......XXXX.....',
+        '.....XXXX.....XXXXXX....',
+        '....XXXXXX...XXXXXXXX...',
+        '...XXXXXXXX..XXXXXXXX...',
+        '...XXXXXXXX..XXXXXXXX...',
+        '...XXXXXXXX..XXXXXXXX...',
+        '...XXXXXXXX...XXXXXX....',
+        '....XXXXXX.....XXXX.....',
+        '.....XXXX...............',
+        '........................',
+        '........................',
+        '........................',
+    ],
+    'zitrone': [
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '.........XXXXXX.........',
+        '.......XXXXXXXXXX.......',
+        '......XXXXXXXXXXXX......',
+        '.....XXXXXXXXXXXXXX.....',
+        '....XXXXXXXXXXXXXXXX....',
+        '..XXXXXXXXXXXXXXXXXXXX..',
+        '..XXXXXXXXXXXXXXXXXXXX..',
+        '....XXXXXXXXXXXXXXXX....',
+        '.....XXXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXX......',
+        '.......XXXXXXXXXX.......',
+        '.........XXXXXX.........',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+    ],
+    'erdbeere': [
+        '........................',
+        '........................',
+        '.............X..........',
+        '...........XX...........',
+        '....X......XX......X....',
+        '....XX..X..XX..X..XX....',
+        '.....XX.XXXXXXXX.XX.....',
+        '.....XXXXXXXXXXXXXX.....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '....XXXXXXXXXXXXXXXX....',
+        '.....XXXXXXXXXXXXXX.....',
+        '.....XXXXXXXXXXXXXX.....',
+        '......XXXXXXXXXXXX......',
+        '......XXXXXXXXXXXX......',
+        '.......XXXXXXXXXX.......',
+        '.......XXXXXXXXXX.......',
+        '........XXXXXXXX........',
+        '.........XXXXXX.........',
+        '..........XXXX..........',
+        '...........XX...........',
+        '........................',
+        '........................',
+        '........................',
+    ],
+}
+
+
+def chars(grid, is_set):
+    out = []
+    for k in range(9):
+        for y in range(8):
+            row = grid[(k // 3) * 8 + y][(k % 3) * 8:(k % 3) * 8 + 8]
+            out.append(sum(0x80 >> x for x, c in enumerate(row) if is_set(c)))
+    return out
+
+
+def check(name, grid):
+    assert len(grid) == 24 and all(len(r) == 24 for r in grid), name
+    for y, row in enumerate(grid):
+        for x, c in enumerate(row):
+            assert c in '.X', (name, y, x)
+            if c == 'X':
+                assert 2 <= x <= 21 and 2 <= y <= 21, (name, y, x)
+
+
+def emit(line_bytes):
+    return '\t!byte ' + ', '.join(f'${b:02x}' for b in line_bytes)
+
+
+def main():
+    lines = [
+        '; Erzeugt von tools/charset.py, nicht von Hand ändern.',
+        '; Zeichen $00 leer, $01–$09 Kartenrücken, ab $0A die Früchte 1–8, je 3×3 zeilenweise.',
+        '',
+        '*=$3000',
+        '\t!fill 8, 0',
+        '; Kartenrücken',
+    ]
+    b = chars(BACK, lambda c: c == '#')
+    lines += [emit(b[i:i + 8]) for i in range(0, 72, 8)]
+    for n, (name, grid) in enumerate(FRUITS.items(), 1):
+        check(name, grid)
+        lines.append(f'; {n} {name.capitalize()}')
+        b = chars(grid, lambda c: c == '.')
+        lines += [emit(b[i:i + 8]) for i in range(0, 72, 8)]
+    print('\n'.join(lines))
+
+
+if __name__ == '__main__':
+    main()

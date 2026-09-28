@@ -135,3 +135,44 @@ ptr_ok
 	sbc #$04		; Farb-RAM liegt $0400 unter dem Bildschirm
 	sta colr+1
 	rts
+
+; Erstes Zeichen und Flächenfarbe der Motive 1–8.
+fruit_char
+	!byte $0a, $13, $1c, $25, $2e, $37, $40, $49
+fruit_color
+	!byte $42, $58, $45, $67, $44, $4b, $6a, $32
+
+!ifdef PREVIEW {
+; Alle Plätze offen, Motive 1–8 der Reihe nach.
+draw_preview
+	lda #0
+	sta motif
+	sta draw_row
+preview_rows
+	lda #0
+	sta draw_col
+preview_cols
+	ldx motif
+	lda fruit_color,x
+	pha
+	lda fruit_char,x
+	tay
+	pla
+	tax
+	tya
+	jsr draw_card
+	lda motif
+	clc
+	adc #1
+	and #7
+	sta motif
+	inc draw_col
+	lda draw_col
+	cmp #4
+	bne preview_cols
+	inc draw_row
+	lda draw_row
+	cmp #6
+	bne preview_rows
+	rts
+}

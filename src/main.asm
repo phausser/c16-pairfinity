@@ -27,6 +27,7 @@ key        = $0429
 sy         = $042a
 sx         = $042b
 edges      = $042c
+motif      = $042d
 scr        = $fb
 colr       = $fd
 
@@ -65,7 +66,11 @@ start
 	jsr clear_screen
 	jsr init_board
 	jsr draw_board
+!ifdef PREVIEW {
+	jsr draw_preview
+} else {
 	jsr show_cursor
+}
 loop
 	jsr read_edges
 	beq loop
