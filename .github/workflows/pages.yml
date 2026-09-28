@@ -19,8 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: ACME installieren
-        run: sudo apt-get update && sudo apt-get install -y acme
+      - name: ACME 0.97 bauen
+        # Ubuntu liefert ein älteres ACME ohne --strict. Revision wie im Arch-Paket.
+        run: |
+          sudo apt-get update && sudo apt-get install -y subversion
+          svn export -q -r 446 https://svn.code.sf.net/p/acme-crossass/code-0/trunk "$RUNNER_TEMP/acme"
+          make -C "$RUNNER_TEMP/acme/src" CFLAGS="-O2 -w" LIBS="-lm"
+          echo "$RUNNER_TEMP/acme/src" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/acme/src/acme" --version
       - name: Prüfen
         run: make lint
       - name: Bauen
