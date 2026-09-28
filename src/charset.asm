@@ -1,5 +1,5 @@
-; Zeichen $00 leer, $01–$09 Kartenrücken (noch leer), $0A–$12 Apfel, 3×3 zeilenweise.
-; 1 = Fruchtfarbe, 0 = schwarz. Bit 7 ist links. Silhouette mittig, mindestens zwei Pixel Rand.
+; Zeichen $00 leer, $01–$09 Kartenrücken, $0A–$12 Apfel. 3×3 zeilenweise.
+; 1 = Fläche, 0 = schwarz. Bit 7 ist links.
 ;
 ; ########################
 ; ########################
@@ -27,7 +27,16 @@
 ; ########################
 
 *=$3000
-	!fill 10*8, 0
+	!fill 8, 0
+	!byte $ff, $ff, $ff, $ff, $f0, $f0, $f3, $f3
+	!byte $ff, $ff, $ff, $ff, $00, $00, $ff, $e7
+	!byte $ff, $ff, $ff, $ff, $0f, $0f, $cf, $cf
+	!byte $f3, $f3, $f3, $f2, $f2, $f3, $f3, $f3
+	!byte $c3, $81, $00, $00, $00, $00, $81, $c3
+	!byte $cf, $cf, $cf, $4f, $4f, $cf, $cf, $cf
+	!byte $f3, $f3, $f0, $f0, $ff, $ff, $ff, $ff
+	!byte $e7, $ff, $00, $00, $ff, $ff, $ff, $ff
+	!byte $cf, $cf, $0f, $0f, $ff, $ff, $ff, $ff
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $ff, $ff, $ff, $e9, $e8, $e0, $e0, $01
 	!byte $ff, $ff, $ff, $ff, $7f, $7f, $ff, $ff

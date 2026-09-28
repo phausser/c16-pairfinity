@@ -72,7 +72,7 @@ Joystick in Port 1 und die Pfeiltasten wirken gleich. Feuer ist der Feuerknopf, 
 
 Joystick 1: `$FA` nach `$FF08` schreiben und `$FF08` lesen. Bits 0 bis 3 sind hoch, runter, links, rechts. Bit 6 ist Feuer. Aktiv ist low.
 
-Tastatur: Spalte über `$FD30` wählen (0-Bit selektiert), `$FF` nach `$FF08` schreiben, `$FF08` lesen. Die Zeile ist das Bit, gedrückt ist low.
+Tastatur: Zeile über `$FD30` wählen (0-Bit selektiert), `$FF` nach `$FF08` schreiben, `$FF08` lesen. Die Spalte ist das Bit, gedrückt ist low. Beim Lesen des Joysticks steht `$FD30` auf `$FF`.
 
 | Taste | Zeile | Spalte |
 | --- | --- | --- |

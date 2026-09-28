@@ -1,5 +1,4 @@
-; Endlos-Memory, Schritt 1.
-; Schwarzer Schirm, ein Apfel: gesetztes Pixel = Fläche, gelöschtes = schwarz.
+; Endlos-Memory. Raster 4×6, verdeckte Karten, Cursor.
 
 screen     = $0c00
 color      = $0800
@@ -10,11 +9,30 @@ ted_misc2  = $ff13
 ted_bg     = $ff15
 ted_border = $ff19
 
-apple_row  = 11
-apple_col  = 18
-apple_off  = apple_row * 40 + apple_col
-apple_color = $42
-apple_char = 10
+board      = $0400
+cursor_col = $0418
+cursor_row = $0419
+prev_dirs  = $041a
+try_col    = $041b
+try_row    = $041c
+draw_col   = $041d
+draw_row   = $041e
+char_base  = $041f
+color_byte = $0420
+idx        = $0425
+rows_left  = $0426
+dir        = $0427
+dirs       = $0428
+key        = $0429
+sy         = $042a
+sx         = $042b
+edges      = $042c
+scr        = $fb
+colr       = $fd
+
+back_char  = 1
+back_color = $51
+cursor_bit = $80
 
 *=$1001
 	!word basend
@@ -44,10 +62,44 @@ start
 	sta ted_misc1
 	lda #$30		; Zeichensatz bei $3000
 	sta ted_misc2
+	jsr clear_screen
+	jsr init_board
+	jsr draw_board
+	jsr show_cursor
+loop
+	jsr read_edges
+	beq loop
+	sta edges
+	and #1
+	beq not_up
+	lda #0
+	jsr move_cursor
+not_up
+	lda edges
+	and #2
+	beq not_down
+	lda #1
+	jsr move_cursor
+not_down
+	lda edges
+	and #4
+	beq not_left
+	lda #2
+	jsr move_cursor
+not_left
+	lda edges
+	and #8
+	beq not_right
+	lda #3
+	jsr move_cursor
+not_right
+	jsr settle
+	jmp loop
 
+clear_screen
 	ldx #0
 	lda #0
-clear
+clear_loop
 	sta screen,x
 	sta screen+$100,x
 	sta screen+$200,x
@@ -57,37 +109,22 @@ clear
 	sta color+$200,x
 	sta color+$300,x
 	inx
-	bne clear
+	bne clear_loop
+	rts
 
-	lda #apple_char
-	sta screen+apple_off
-	lda #apple_char+1
-	sta screen+apple_off+1
-	lda #apple_char+2
-	sta screen+apple_off+2
-	lda #apple_char+3
-	sta screen+apple_off+40
-	lda #apple_char+4
-	sta screen+apple_off+41
-	lda #apple_char+5
-	sta screen+apple_off+42
-	lda #apple_char+6
-	sta screen+apple_off+80
-	lda #apple_char+7
-	sta screen+apple_off+81
-	lda #apple_char+8
-	sta screen+apple_off+82
-	lda #apple_color
-	sta color+apple_off
-	sta color+apple_off+1
-	sta color+apple_off+2
-	sta color+apple_off+40
-	sta color+apple_off+41
-	sta color+apple_off+42
-	sta color+apple_off+80
-	sta color+apple_off+81
-	sta color+apple_off+82
+; Kurze Pause, damit ein prellender Taster nicht zweimal zählt.
+settle
+	ldx #$18
+settle_outer
+	ldy #0
+settle_inner
+	dey
+	bne settle_inner
+	dex
+	bne settle_outer
+	rts
 
-ready	jmp ready
-
+	!source "src/board.asm"
+	!source "src/draw.asm"
+	!source "src/input.asm"
 	!source "src/charset.asm"
