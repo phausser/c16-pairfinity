@@ -33,7 +33,7 @@ sy         = $042a
 sx         = $042b
 edges      = $042c
 motif      = $042d
-phase      = $042e
+phase      = $042e		; 0 zu, 1 eine offen, 2 Fehlversuch
 open1      = $042f
 open2      = $0430
 cell_color = $0431
@@ -56,7 +56,7 @@ bg_timer   = $0446
 bg_row_byte = $0447
 score      = $0448		; 3 Ziffern, höchste zuerst
 game_over  = $044b
-was_pair   = $044c
+settle_now = $044c		; 1: Fehlversuch zu, Karte fällt noch
 shake_i    = $044d
 snd_pos    = $044e
 snd_time   = $044f
@@ -73,7 +73,7 @@ charset    = $3000
 back_char  = 1
 back_color = $61		; Hellgrau
 hud_color  = $71
-cursor_color = $71		; angewählte Karte, Weiss
+cursor_color = $71		; angewählte verdeckte Karte, Weiss
 msg_color  = hud_color | $80	; Schriftzug blinkt
 ch_0       = $52		; Ziffern, danach A E G M O P R S T V
 ch_a       = $5c
@@ -145,6 +145,18 @@ loop
 	jsr read_edges
 	beq loop
 	sta edges
+	lda phase
+	cmp #2
+	bne use_edges
+	lda edges
+	and #$0f		; nur eine Cursortaste deckt wieder zu
+	beq loop
+	sta edges
+	jsr hide_open
+	lda #1
+	sta settle_now
+use_edges
+	lda edges
 	and #1
 	beq not_up
 	lda #0
@@ -173,6 +185,12 @@ not_right
 	beq not_fire
 	jsr pick
 not_fire
+	lda settle_now
+	beq no_settle
+	lda #0
+	sta settle_now
+	jsr settle_board
+no_settle
 	lda game_over
 	bne game_end
 	ldx #3			; kurz warten, damit ein prellender Taster nicht zweimal zählt

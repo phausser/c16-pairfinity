@@ -52,6 +52,7 @@ shuffle
 	lda #0
 	sta phase
 	sta game_over
+	sta settle_now
 	sta score
 	sta score+1
 	sta score+2
@@ -198,8 +199,14 @@ pick_cursor
 	beq pick_done		; leerer Platz
 	cpx open1
 	beq pick_done		; dieselbe Karte
+	cpx open2
+	beq pick_done
 	lda phase
-	bne pick_second
+	beq pick_first
+	cmp #1
+	bne pick_done		; Fehlversuch wartet auf den Cursor
+	jmp pick_second
+pick_first
 	stx open1
 	inc phase
 	jsr click
@@ -208,21 +215,34 @@ pick_second
 	stx open2
 	jsr click
 	jsr draw_cursor_cell
+	ldx open1
+	ldy open2
+	lda board,x
+	cmp board,y
+	bne pick_miss
 	ldx #30
 	jsr wait_frames
 	ldx open1
 	ldy open2
-	lda #0
-	sta was_pair
-	lda board,x
-	cmp board,y
-	bne pick_close
-	inc was_pair
 	lda #0			; Paar: beide Plätze leeren
 	sta board,x
 	sta board,y
 	jsr add_pair
-pick_close
+	jsr hide_open
+	lda #snd_pair
+	jsr play
+	jsr shake
+	jmp settle_board
+pick_miss
+	lda #2
+	sta phase
+	lda #snd_miss
+	jsr play
+pick_done
+	rts
+
+; Beide offenen Karten neu zeichnen und die Zugphase schliessen.
+hide_open
 	lda #0
 	sta phase
 	lda open1
@@ -232,19 +252,7 @@ pick_close
 	lda open2
 	ldx #$ff
 	stx open2
-	jsr draw_index
-	lda was_pair
-	beq pick_miss
-	lda #snd_pair
-	jsr play
-	jsr shake
-	jmp settle_board
-pick_miss
-	lda #snd_miss
-	jsr play
-	jmp settle_board
-pick_done
-	rts
+	jmp draw_index
 
 ; Zeichnet den Platz mit dem Index in A neu.
 draw_index

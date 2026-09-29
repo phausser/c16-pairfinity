@@ -11,7 +11,7 @@ Das Raster hat 4 Spalten und 6 Reihen, 24 Plätze. Eine Karte ist 3×3 Zeichen (
 Ein Zug deckt genau zwei Karten auf. Dieselbe Karte ein zweites Mal zu wählen geht nicht. Leere Plätze gehen nicht.
 
 - Gleiches Motiv: beide Karten verschwinden. In jeder betroffenen Spalte rutschen die Karten darüber nach unten, bis die Spalte wieder unten dicht liegt.
-- Verschiedene Motive: beide Karten drehen sich auf den Rücken zurück.
+- Verschiedene Motive: beide Karten bleiben offen, bis eine Cursortaste kommt, und drehen sich dann auf den Rücken.
 
 Danach fällt immer eine neue Karte von oberhalb des Rasters. Sie landet in einer zufälligen Spalte, die noch einen freien Platz hat, auf dem obersten belegten Platz dieser Spalte. Ihr Motiv ist das Motiv einer zufälligen Karte, die schon liegt. Liegt keine Karte mehr, ist das Motiv zufällig von 1 bis 8.
 
@@ -19,7 +19,7 @@ Start: 12 Karten, untenbündig, jede Spalte drei hoch. Die Auslage enthält jede
 
 Punktzahl ist die Anzahl gefundener Paare.
 
-Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz. Die Paar-Zahl bleibt stehen, darüber steht `GAME OVER`. Feuer gibt neu.
+Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz. Die Paar-Zahl bleibt stehen. `GAME OVER` steht in der Bildschirmmitte. Feuer gibt neu.
 
 ## Spielfeld
 
@@ -49,7 +49,7 @@ Offene Karte, nach der Vorlage: die Fläche ist die Fruchtfarbe, die Frucht selb
 
 Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Der globale Hintergrund und der Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Silhouette gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Silhouette liegt in der Mitte der Karte, mit mindestens zwei Pixeln Farbrand an jedem Rand. Der Kartenrücken ist für alle Motive gleich, die Streifen laufen bis an den Rand, und er trägt die Fruchtfarbe nicht.
 
-Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte Karte ist Weiss `$71`; die schwarze Frucht bleibt schwarz. `START` und `GAME OVER` blinken über Bit 7. Sonst blinkt nichts. Die acht Motive:
+Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte verdeckte Karte ist Weiss `$71`. Eine offene Karte bleibt in ihrer Fruchtfarbe; die schwarze Frucht bleibt schwarz. `START` und `GAME OVER` blinken über Bit 7. Sonst blinkt nichts. Die acht Motive:
 
 | Motiv | Fläche | Byte | Silhouette |
 | --- | --- | --- | --- |
@@ -68,7 +68,7 @@ Eine fallende Karte rückt pro Schritt eine Zeichenzeile nach unten und wartet d
 
 ## Eingabe
 
-Joystick in Port 1 und die Pfeiltasten wirken gleich. Feuer ist der Feuerknopf, die Leertaste oder Return. Ein Schritt pro Flanke, Halten wiederholt nicht. Solange eine Karte fällt oder ein Zug aufgelöst wird, liegt die Eingabe still.
+Joystick in Port 1 und die Pfeiltasten wirken gleich. Feuer ist der Feuerknopf, die Leertaste oder Return. Ein Schritt pro Flanke, Halten wiederholt nicht. Solange eine Karte fällt, ein Paar noch kurz offen liegt oder die Spalten packen, liegt die Eingabe still. Ein Fehlversuch wartet auf eine Cursortaste; Feuer deckt in dieser Zeit nichts auf.
 
 Joystick 1: `$FA` nach `$FF08` schreiben und `$FF08` lesen. Bits 0 bis 3 sind hoch, runter, links, rechts. Bit 6 ist Feuer. Aktiv ist low.
 
@@ -89,7 +89,7 @@ Der Cursor steht auf einer liegenden Karte. Ein Schritt sucht in dieser Richtung
 
 1. Cursor bewegen. Feuer auf einer verdeckten Karte deckt sie auf.
 2. Cursor bewegen. Feuer auf einer anderen verdeckten Karte deckt die zweite auf.
-3. Beide bleiben etwa 30 Frames offen.
+3. Treffer bleiben etwa 30 Frames offen. Ungleiche bleiben offen, bis eine Cursortaste kommt. Feuer deckt in dieser Zeit nichts auf.
 4. Treffer: beide Plätze leeren, dann jede Spalte animiert nach unten packen. Daneben: beide wieder verdecken.
 5. Hat keine Spalte Platz, Spielende. Sonst Motiv und Spalte wählen und die Karte von über dem Raster auf ihren Platz fallen lassen.
 6. Bei Spielende steht `GAME OVER` in der Bildschirmmitte. Feuer gibt neu, Punktzahl auf 0, und `START` wartet dort auf das nächste Feuer.

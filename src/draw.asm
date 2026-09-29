@@ -27,7 +27,7 @@ draw_cursor_cell
 	; weiter in draw_cell
 
 ; Zeichnet den Platz draw_col/draw_row: leer, verdeckt oder offen.
-; Steht der Cursor darauf, ist die Fläche weiss.
+; Eine verdeckte Karte unter dem Cursor ist weiss. Eine offene bleibt farbig.
 draw_cell
 	lda draw_row
 	asl
@@ -51,6 +51,8 @@ cell_open
 	lda fruit_color-1,y
 	sta cell_color
 	lda fruit_char-1,y
+	ldx cell_color
+	jmp draw_card
 cell_cursor
 	pha
 	lda draw_col
