@@ -18,7 +18,7 @@
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fc
 	!byte $ff, $ff, $ff, $dc, $d8, $e0, $e3, $2c
 	!byte $ff, $ff, $87, $0f, $1f, $7f, $ff, $3f
-	!byte $f0, $e0, $e0, $e0, $e0, $e0, $e0, $f0
+	!byte $f0, $e6, $e7, $e3, $e0, $e0, $e0, $f0
 	!byte $08, $00, $00, $00, $00, $00, $00, $00
 	!byte $0f, $07, $07, $07, $07, $07, $07, $0f
 	!byte $f0, $f8, $f8, $fc, $fe, $ff, $ff, $ff
@@ -28,9 +28,9 @@
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe
 	!byte $ff, $ff, $ff, $e4, $e0, $e7, $81, $00
 	!byte $ff, $ff, $1f, $07, $0f, $ff, $ff, $7f
-	!byte $fc, $f8, $f8, $f0, $f0, $f0, $f0, $f0
-	!byte $00, $00, $00, $00, $00, $00, $00, $00
-	!byte $3f, $1f, $1f, $0f, $0f, $0f, $0f, $0f
+	!byte $fc, $f8, $f9, $f9, $f1, $f0, $f0, $f0
+	!byte $00, $00, $80, $c0, $80, $00, $00, $00
+	!byte $3f, $1f, $1f, $1f, $0f, $0f, $0f, $0f
 	!byte $f0, $f8, $f8, $fc, $fe, $ff, $ff, $ff
 	!byte $00, $00, $00, $00, $00, $81, $ff, $ff
 	!byte $0f, $1f, $1f, $3f, $7f, $ff, $ff, $ff
@@ -38,11 +38,11 @@
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $ff, $ff, $df, $ef, $ef, $e7, $c3, $81
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $ff, $ff, $ff, $ff, $fe, $fc, $f8, $f8
-	!byte $81, $81, $00, $00, $00, $00, $00, $00
+	!byte $ff, $ff, $ff, $ff, $fe, $fc, $f8, $f9
+	!byte $81, $81, $00, $00, $00, $00, $00, $80
 	!byte $ff, $ff, $ff, $ff, $7f, $3f, $1f, $1f
-	!byte $f0, $f0, $f0, $f8, $fc, $ff, $ff, $ff
-	!byte $00, $00, $00, $00, $00, $18, $ff, $ff
+	!byte $f1, $f1, $f0, $f8, $fc, $ff, $ff, $ff
+	!byte $c0, $80, $00, $00, $00, $18, $ff, $ff
 	!byte $0f, $0f, $0f, $1f, $3f, $ff, $ff, $ff
 ; 4 Banane
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
@@ -50,27 +50,27 @@
 	!byte $ff, $ff, $ff, $3f, $3f, $3f, $1f, $0f
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $fe, $fe, $fe, $fe, $fc, $fc, $f8, $f0
-	!byte $0f, $07, $07, $07, $07, $07, $07, $0f
+	!byte $0f, $87, $87, $07, $07, $07, $07, $0f
 	!byte $ff, $ff, $f8, $e0, $e0, $ff, $ff, $ff
 	!byte $c0, $00, $00, $03, $3f, $ff, $ff, $ff
 	!byte $1f, $3f, $ff, $ff, $ff, $ff, $ff, $ff
 ; 5 Traube
-	!byte $ff, $ff, $ff, $ff, $ff, $e3, $c0, $c0
-	!byte $ff, $ff, $f4, $f0, $f4, $10, $00, $00
-	!byte $ff, $ff, $3f, $1f, $7f, $c7, $03, $03
-	!byte $c0, $e0, $f8, $f8, $f8, $fc, $fe, $fe
-	!byte $00, $00, $00, $00, $00, $00, $00, $00
-	!byte $03, $07, $0f, $0f, $0f, $1f, $7f, $7f
-	!byte $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $00, $00, $c1, $c1, $c1, $e3, $ff, $ff
-	!byte $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $fe, $fd
+	!byte $ff, $ff, $e3, $e7, $e7, $81, $00, $80
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $7f, $3f
+	!byte $f8, $fc, $f8, $fc, $f8, $fc, $fe, $fe
+	!byte $00, $00, $00, $80, $01, $00, $00, $00
+	!byte $1f, $3f, $1f, $3f, $9f, $3f, $7f, $7f
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $00, $00, $81, $c3, $e7, $ff, $ff, $ff
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 ; 6 Kirsche
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $ff, $ff, $ff, $fc, $fa, $f6, $ee, $df
 	!byte $ff, $ff, $87, $0f, $3f, $ff, $ff, $7f
-	!byte $ff, $ff, $ff, $fe, $fe, $f8, $f0, $e0
-	!byte $bf, $7f, $7f, $ff, $fe, $7c, $38, $18
-	!byte $7f, $7f, $7f, $7f, $1f, $0f, $07, $07
+	!byte $ff, $ff, $ff, $fe, $fe, $f8, $f6, $e6
+	!byte $bf, $7f, $7f, $ff, $fe, $7c, $3b, $19
+	!byte $7f, $7f, $7f, $7f, $1f, $0f, $07, $87
 	!byte $e0, $e0, $e0, $f0, $f8, $ff, $ff, $ff
 	!byte $18, $18, $1c, $3e, $7f, $ff, $ff, $ff
 	!byte $07, $07, $0f, $1f, $ff, $ff, $ff, $ff
@@ -78,8 +78,8 @@
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $81, $00
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $7f
-	!byte $fc, $f8, $f0, $c0, $c0, $f0, $f8, $fc
-	!byte $00, $00, $00, $00, $00, $00, $00, $00
+	!byte $fc, $f9, $f1, $c1, $c0, $f0, $f8, $fc
+	!byte $00, $80, $c0, $80, $00, $00, $00, $00
 	!byte $3f, $1f, $0f, $03, $03, $0f, $1f, $3f
 	!byte $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $00, $81, $ff, $ff, $ff, $ff, $ff, $ff
@@ -88,9 +88,9 @@
 	!byte $ff, $ff, $ff, $ff, $f7, $f3, $f9, $f8
 	!byte $ff, $ff, $fb, $e7, $e7, $66, $00, $00
 	!byte $ff, $ff, $ff, $ff, $ef, $cf, $9f, $1f
-	!byte $f0, $f0, $f0, $f8, $f8, $fc, $fc, $fe
-	!byte $00, $00, $00, $00, $00, $00, $00, $00
-	!byte $0f, $0f, $0f, $1f, $1f, $3f, $3f, $7f
+	!byte $f1, $f0, $f2, $f8, $f8, $fc, $fc, $fe
+	!byte $00, $00, $00, $00, $42, $00, $00, $20
+	!byte $8f, $0f, $4f, $1f, $1f, $3f, $3f, $7f
 	!byte $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	!byte $00, $00, $81, $c3, $e7, $ff, $ff, $ff
 	!byte $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff
