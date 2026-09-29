@@ -43,7 +43,7 @@ Zeichen im Satz:
 | `$00` | leer |
 | `$01`–`$09` | Kartenrücken, 3×3, zeilenweise von links nach rechts |
 | `$0A`–`$51` | Früchte 1–8, je 3×3, dieselbe Reihenfolge. Motiv `n` beginnt bei `$0A + (n-1)*9` |
-| danach | Ziffern `0`–`9` ab `$52` und die Buchstaben `A E G M O P R S T V` |
+| danach | Ziffern `0`–`9` ab `$52`, danach `A`–`Z` alphabetisch ab `$5C` bis `$75` |
 
 Offene Karte, nach der Vorlage: die Fläche ist die Fruchtfarbe, die Frucht selbst ist eine geschlossene schwarze Silhouette. Apfel, Orange, Birne und Banane folgen dem Blatt direkt (Stiel und Blatt am Apfel und an der Orange, Stiel an der Birne, Sichel der Banane). Dazu Traube, Kirsche, Zitrone und Erdbeere, dieselbe Art Fläche und Silhouette.
 
