@@ -23,7 +23,7 @@ Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz
 
 ## Spielfeld
 
-Textmodus 40×25. Hintergrund und Rahmen schwarz. Zeichensatz mit 128 Zeichen (1 KB); die oberen 128 Zeichen erzeugt der TED durch Invertierung.
+Textmodus 40×25. Rahmen schwarz. Hinter dem Raster liegt ein Schachbrett aus Schwarz und Dunkelblau (`$2E`, Helligkeit 2), das langsam nach rechts oben wandert. Zeichensatz mit 128 Zeichen (1 KB); die oberen 128 Zeichen erzeugt der TED durch Invertierung.
 
 Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Raster ist 15 Zeichen breit und 23 hoch und füllt den 40×25-Schirm unter der Kopfzeile: links 12 Spalten frei, rechts 13, darunter eine Zeile.
 
@@ -34,7 +34,7 @@ Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Rast
 
 `col` läuft von 0 links nach 3 rechts. `row` 0 ist der unterste Platz der Spalte, `row` 5 der oberste. Eine Spalte der Höhe `h` belegt die Reihen `0 .. h-1`.
 
-Anzeige in Bildschirmzeile 1, ein Feld Abstand zum oberen Rand. Rechts `PAARE` und drei Ziffern in den Spalten 30–38. Links ab Spalte 1 steht vor jedem Spiel `START` und bei Spielende `GAME OVER`; während des Spiels ist die Stelle Hintergrund. Zeile 0 ist reiner Hintergrund.
+Anzeige in Bildschirmzeile 1, ein Feld Abstand zum oberen Rand. Rechts `PAARE` und drei Ziffern in den Spalten 30–38. Vor dem Spiel steht `START`, bei Spielende `GAME OVER`. Beide Texte stehen in der Bildschirmmitte, horizontal und vertikal, mit einem schwarzen Rand von einem Zeichen oben, links, unten und rechts, und die Schrift blinkt. Während des Spiels ist die Stelle wieder Brett und Schachbrett. Zeile 0 ist reiner Hintergrund.
 
 Zeichen im Satz:
 
@@ -47,9 +47,9 @@ Zeichen im Satz:
 
 Offene Karte, nach der Vorlage: die Fläche ist die Fruchtfarbe, die Frucht selbst ist eine geschlossene schwarze Silhouette. Apfel, Orange, Birne und Banane folgen dem Blatt direkt (Stiel und Blatt am Apfel und an der Orange, Stiel an der Birne, Sichel der Banane). Dazu Traube, Kirsche, Zitrone und Erdbeere, dieselbe Art Fläche und Silhouette.
 
-Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Hintergrund und Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Silhouette gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Silhouette liegt in der Mitte der Karte, mit mindestens zwei Pixeln Farbrand an jedem Rand. Der Kartenrücken ist für alle Motive gleich und trägt die Fruchtfarbe nicht.
+Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Der globale Hintergrund und der Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Silhouette gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Silhouette liegt in der Mitte der Karte, mit mindestens zwei Pixeln Farbrand an jedem Rand. Der Kartenrücken ist für alle Motive gleich und trägt die Fruchtfarbe nicht.
 
-Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit bleibt unter 7, damit die Fläche nicht ausbleicht; nur der Cursor darf auf 7 gehen. Kartenrücken überall `$51`. Der Cursor hebt auf dieser Karte die Helligkeit um eine Stufe, der Rücken wird hellgrau `$61`; die schwarze Frucht bleibt schwarz. Nichts blinkt. Die acht Motive:
+Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte Karte ist Weiss `$71`; die schwarze Frucht bleibt schwarz. `START` und `GAME OVER` blinken über Bit 7. Sonst blinkt nichts. Die acht Motive:
 
 | Motiv | Fläche | Byte | Silhouette |
 | --- | --- | --- | --- |
@@ -92,7 +92,7 @@ Der Cursor steht auf einer liegenden Karte. Ein Schritt sucht in dieser Richtung
 3. Beide bleiben etwa 30 Frames offen.
 4. Treffer: beide Plätze leeren, dann jede Spalte animiert nach unten packen. Daneben: beide wieder verdecken.
 5. Hat keine Spalte Platz, Spielende. Sonst Motiv und Spalte wählen und die Karte von über dem Raster auf ihren Platz fallen lassen.
-6. Bei Spielende steht `GAME OVER`. Feuer gibt neu, Punktzahl auf 0, und `START` wartet auf das nächste Feuer.
+6. Bei Spielende steht `GAME OVER` in der Bildschirmmitte. Feuer gibt neu, Punktzahl auf 0, und `START` wartet dort auf das nächste Feuer.
 
 Packen: solange in einer Spalte über einem leeren Platz eine Karte liegt, rückt jede solche Karte um einen Platz nach unten. Dieser eine Platz wird animiert (vier Zeichenzeilen, weil die Lücke dazwischen mitzählt), danach der nächste. Beide Karten eines Paares können in derselben Spalte liegen.
 

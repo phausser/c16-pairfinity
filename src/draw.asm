@@ -27,7 +27,7 @@ draw_cursor_cell
 	; weiter in draw_cell
 
 ; Zeichnet den Platz draw_col/draw_row: leer, verdeckt oder offen.
-; Steht der Cursor darauf, ist die Fläche eine Stufe heller.
+; Steht der Cursor darauf, ist die Fläche weiss.
 draw_cell
 	lda draw_row
 	asl
@@ -59,9 +59,7 @@ cell_cursor
 	lda draw_row
 	cmp cursor_row
 	bne cell_draw
-	lda cell_color
-	clc
-	adc #cursor_lum
+	lda #cursor_color
 	sta cell_color
 cell_draw
 	pla
@@ -171,6 +169,7 @@ row_y
 	rts
 
 ; A = Bildschirmzeile. scr und colr zeigen auf Spalte sx dieser Zeile.
+; X wird dabei überschrieben.
 line_ptr
 	tax
 	lda line_lo,x
@@ -269,6 +268,8 @@ line_hi
 hud_row    = 1
 hud_col    = 30
 hud        = hud_row * 40 + hud_col
+msg_top    = 11		; (25 - 3) / 2, Bildschirmmitte
+msg_row    = 12
 
 draw_hud
 	ldx #4
@@ -309,47 +310,80 @@ add_digit
 add_done
 	jmp draw_score
 
-; Schriftzug oben links, auf der Höhe der Punktzahl. A = Offset in words.
+; Zentriert den Text aus words in der Bildschirmmitte. A = Offset.
+; Schwarzes Feld mit einem Zeichen Rand, die Schrift blinkt.
 show_label
+	pha
 	tax
-	ldy words,x		; Spalte
-	lda words+1,x		; Länge
+	lda words,x
 	sta label_len
+	clc
+	adc #2
+	sta box_w
+	lda #40
+	sec
+	sbc box_w
+	lsr
+	sta box_x
+	lda #msg_top
+	sta cur_y
+	lda #3
+	sta rows_left
+frame_row
+	lda box_x
+	sta sx
+	lda cur_y
+	jsr line_ptr
+	ldy box_w
+	dey
+frame_col
+	lda #0
+	sta (scr),y
+	sta (colr),y
+	dey
+	bpl frame_col
+	inc cur_y
+	dec rows_left
+	bne frame_row
+	pla
+	clc
+	adc #1			; erstes Zeichen, X überlebt line_ptr nicht
+	pha
+	lda box_x
+	clc
+	adc #1
+	sta sx
+	lda #msg_row
+	jsr line_ptr
+	pla
+	tax
+	ldy #0
 label_char
-	lda words+2,x
-	sta screen + hud_row * 40,y
-	lda #hud_color
-	sta color + hud_row * 40,y
+	lda words,x
+	sta (scr),y
+	lda #msg_color
+	sta (colr),y
 	inx
 	iny
-	dec label_len
+	cpy label_len
 	bne label_char
 	rts
 
-; Die Stelle des Schriftzugs wieder Hintergrund.
+; Nimmt den Starttext weg. Brett und Punktzahl liegen danach wieder frei.
 hide_label
-	lda #0
-	sta sx
-	lda #hud_row
-	sta cur_y
-	jsr line_ptr
-	ldy #9
-hide_cell
-	tya
-	jsr bg_cell
-	dey
-	bne hide_cell
-	rts
+	jsr clear_screen
+	jsr draw_board
+	jmp draw_hud
 
 word_paare
 	!byte ch_p, ch_a, ch_a, ch_r, ch_e
 
-; Je Wort: Spalte, Länge, Zeichen. Höchstens 9 Zeichen ab Spalte 1.
+; Je Text: Länge, Zeichen.
 words
 word_start = * - words
-	!byte 1, 5, ch_s, ch_t, ch_a, ch_r, ch_t
+	!byte 5, ch_s, ch_t, ch_a, ch_r, ch_t
 word_game_over = * - words
-	!byte 1, 9, ch_g, ch_a, ch_m, ch_e, 0, ch_o, ch_v, ch_e, ch_r
+	!byte 9, ch_g, ch_a, ch_m, ch_e, 0, ch_o, ch_v, ch_e, ch_r
 
 ; Erstes Zeichen und Flächenfarbe der Motive 1–8.
 fruit_char

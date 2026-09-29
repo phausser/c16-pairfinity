@@ -63,14 +63,18 @@ snd_time   = $044f
 tick_time  = $0450
 tick_x     = $0451
 label_len  = $0452
+box_x      = $0453
+box_w      = $0454
 scr        = $fb
 colr       = $fd
 charset    = $3000
 }
 
 back_char  = 1
-back_color = $51
+back_color = $61		; Hellgrau
 hud_color  = $71
+cursor_color = $71		; angewählte Karte, Weiss
+msg_color  = hud_color | $80	; Schriftzug blinkt
 ch_0       = $52		; Ziffern, danach A E G M O P R S T V
 ch_a       = $5c
 ch_e       = $5d
@@ -82,10 +86,8 @@ ch_r       = $62
 ch_s       = $63
 ch_t       = $64
 ch_v       = $65
-cursor_lum = $10		; Cursor: eine Helligkeitsstufe heller
-
 bg_char    = $7f		; $ff ist dasselbe Zeichen invertiert
-bg_color   = $21
+bg_color   = $2e		; Dunkelblau, Helligkeit 2
 bg_speed   = 4		; Frames je Pixel
 
 *=$1001

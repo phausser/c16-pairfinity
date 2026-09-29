@@ -157,8 +157,16 @@ pack_row
 	clc
 	adc step
 	sta sy
-	lda #back_char
 	ldx #back_color
+	lda anim_col
+	cmp cursor_col
+	bne pack_paint
+	lda anim_row
+	cmp cursor_row
+	bne pack_paint
+	ldx #cursor_color
+pack_paint
+	lda #back_char
 	jsr draw_at
 	jmp pack_row
 pack_col_done
