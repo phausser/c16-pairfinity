@@ -30,11 +30,11 @@ jobs:
       - name: Prüfen
         run: make lint
       - name: Bauen
-        run: make memory.prg
+        run: make pairfinity.prg
       - name: Seite zusammenstellen
         run: |
           mkdir site
-          cp web/index.html memory.prg site/
+          cp web/index.html pairfinity.prg site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
