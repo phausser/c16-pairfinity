@@ -219,15 +219,16 @@ bg_cell_even
 	lda #bg_char
 bg_cell_put
 	sta (scr),y
-	lda #bg_color
+	lda bg_color
 	sta (colr),y
 	rts
 
 ; Schachbrett aus 8×8-Feldern, das jeden Pixel-Schritt nach rechts oben wandert.
 ; Das Muster wiederholt sich nach 16 Pixeln, bg_step läuft 0–15.
+; Die Farbe wechselt unabhängig davon alle bg_hue_speed Frames.
 bg_tick
 	dec bg_timer
-	bne bg_done
+	bne bg_scroll_done
 	lda #bg_speed
 	sta bg_timer
 	lda bg_step
@@ -235,6 +236,27 @@ bg_tick
 	adc #1
 	and #15
 	sta bg_step
+	jsr bg_glyph
+bg_scroll_done
+	dec bg_hue_timer
+	bne bg_done
+	lda #bg_hue_speed
+	sta bg_hue_timer
+	lda bg_phase
+	clc
+	adc #1
+	cmp #bg_palette_end - bg_palette
+	bne bg_store
+	lda #0
+bg_store
+	sta bg_phase
+	tax
+	lda bg_palette,x
+	sta bg_color
+	jsr bg_recolor
+bg_done
+	rts
+
 bg_glyph
 	ldx bg_step
 	lda bg_mask,x
@@ -253,8 +275,45 @@ bg_plain
 	iny
 	cpy #8
 	bne bg_row
-bg_done
 	rts
+
+; Färbt die Hintergrundfelder neu. Karten, Schrift und Rahmen bleiben.
+bg_recolor
+	lda sx
+	pha
+	lda cur_y
+	pha
+	lda #0
+	sta sx
+	sta cur_y
+bg_recolor_row
+	lda cur_y
+	jsr line_ptr
+	ldy #39
+bg_recolor_cell
+	lda (scr),y
+	and #$7f
+	cmp #bg_char
+	bne bg_recolor_next
+	lda bg_color
+	sta (colr),y
+bg_recolor_next
+	dey
+	bpl bg_recolor_cell
+	inc cur_y
+	lda cur_y
+	cmp #25
+	bne bg_recolor_row
+	pla
+	sta cur_y
+	pla
+	sta sx
+	rts
+
+; Blau, Lila, Rot, Orange, Gelb, Grün, alle Helligkeit 1 (niedrigste).
+bg_palette
+	!byte $16, $14, $12, $18, $17, $15
+bg_palette_end
 
 ; Obere Musterzeile, um bg_step Pixel nach rechts geschoben.
 bg_mask

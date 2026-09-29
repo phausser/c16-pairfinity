@@ -23,7 +23,7 @@ Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz
 
 ## Spielfeld
 
-Textmodus 40×25. Rahmen schwarz. Hinter dem Raster liegt ein Schachbrett aus Schwarz und Dunkelblau (`$2E`, Helligkeit 2), das langsam nach rechts oben wandert. Zeichensatz mit 128 Zeichen (1 KB); die oberen 128 Zeichen erzeugt der TED durch Invertierung.
+Textmodus 40×25. Rahmen schwarz. Hinter dem Raster liegt ein Schachbrett aus Schwarz und einer Farbe, das langsam nach rechts oben wandert. Die Farbe wechselt alle fünf Sekunden weiter: Blau, Lila, Rot, Orange, Gelb, Grün, wieder Blau, jeweils Helligkeit 1 (niedrigste). Zeichensatz mit 128 Zeichen (1 KB); die oberen 128 Zeichen erzeugt der TED durch Invertierung.
 
 Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Raster ist 15 Zeichen breit und 23 hoch und füllt den 40×25-Schirm unter der Kopfzeile: links 12 Spalten frei, rechts 13, darunter eine Zeile.
 

@@ -38,6 +38,7 @@ open1      = $042f
 open2      = $0430
 cell_color = $0431
 shuf_i     = $0432
+bg_row_byte = $0433
 rnd        = $0434		; 2 Bytes
 gap        = $0436		; 4 Bytes
 step       = $043a
@@ -51,9 +52,11 @@ drop_motif = $0441
 target     = $0442
 cur_y      = $0443
 clear_end  = $0444
-bg_step    = $0445
-bg_timer   = $0446
-bg_row_byte = $0447
+bg_color   = $0445		; aktuelle Farbe des Schachbretts
+bg_timer   = $0446		; Frames bis zum nächsten Scroll-Schritt
+bg_step    = $0447		; Pixel-Phase des Schachbrettmusters, 0–15
+bg_phase   = $0455		; Index in bg_palette
+bg_hue_timer = $0456		; Frames bis zum nächsten Farbwechsel
 score      = $0448		; 3 Ziffern, höchste zuerst
 game_over  = $044b
 settle_now = $044c		; 1: Fehlversuch zu, Karte fällt noch
@@ -87,8 +90,8 @@ ch_s       = $63
 ch_t       = $64
 ch_v       = $65
 bg_char    = $7f		; $ff ist dasselbe Zeichen invertiert
-bg_color   = $2e		; Dunkelblau, Helligkeit 2
-bg_speed   = 4		; Frames je Pixel
+bg_speed   = 4		; Frames je Scroll-Schritt
+bg_hue_speed = 250		; Frames je Farbwechsel, 5 Sekunden bei 50 Hz
 
 *=$1001
 	!word basend
@@ -120,8 +123,13 @@ start
 	sta ted_misc2
 	lda #0
 	sta bg_step
+	sta bg_phase
+	lda bg_palette
+	sta bg_color
 	lda #bg_speed
 	sta bg_timer
+	lda #bg_hue_speed
+	sta bg_hue_timer
 	jsr bg_glyph
 	jsr sound_init
 	jsr seed_random
