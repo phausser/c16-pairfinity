@@ -23,7 +23,7 @@ Spielende: nach dem Auflösen des Zuges hat keine Spalte mehr einen freien Platz
 
 ## Spielfeld
 
-Textmodus 40×25. Rahmen schwarz. Hinter dem Raster liegt ein Schachbrett aus Schwarz und einer Farbe, das langsam nach rechts oben wandert. Die Farbe wechselt alle fünf Sekunden weiter: Blau, Lila, Rot, Orange, Gelb, Grün, wieder Blau, jeweils Helligkeit 1 (niedrigste). Zeichensatz mit 128 Zeichen (1 KB); die oberen 128 Zeichen erzeugt der TED durch Invertierung.
+Textmodus 40×25. Rahmen schwarz. Hinter dem Raster liegen vier Pixel breite diagonale Streifen aus Schwarz und einer Farbe, die von links oben nach rechts unten verlaufen und langsam nach rechts oben wandern. Die Farbe wechselt alle fünf Sekunden weiter: Blau, Lila, Rot, Orange, Gelb, Grün, wieder Blau, jeweils Helligkeit 1 (niedrigste). Zeichensatz mit 128 Zeichen (1 KB); die oberen 128 Zeichen erzeugt der TED durch Invertierung.
 
 Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Raster ist 15 Zeichen breit und 23 hoch und füllt den 40×25-Schirm unter der Kopfzeile: links 12 Spalten frei, rechts 13, darunter eine Zeile.
 
@@ -34,7 +34,7 @@ Zwischen zwei Karten liegt eine Zeichenlücke, horizontal und vertikal. Das Rast
 
 `col` läuft von 0 links nach 3 rechts. `row` 0 ist der unterste Platz der Spalte, `row` 5 der oberste. Eine Spalte der Höhe `h` belegt die Reihen `0 .. h-1`.
 
-Anzeige in Bildschirmzeile 1, ein Feld Abstand zum oberen Rand. Rechts `PAARE` und drei Ziffern in den Spalten 30–38. Vor dem Spiel steht `START`, bei Spielende `GAME OVER`. Beide Texte stehen in der Bildschirmmitte, horizontal und vertikal, mit einem schwarzen Rand von einem Zeichen oben, links, unten und rechts, und die Schrift blinkt. Während des Spiels ist die Stelle wieder Brett und Schachbrett. Zeile 0 ist reiner Hintergrund.
+Anzeige in Bildschirmzeile 1, ein Feld Abstand zum oberen Rand. Rechts `PAARE` und drei Ziffern in den Spalten 30–38. Vor dem Spiel steht `START`, bei Spielende `GAME OVER`. Beide Texte stehen in der Bildschirmmitte, horizontal und vertikal, mit schwarzer blinkender Schrift auf einem weißen Feld mit einem Zeichen Rand oben, links, unten und rechts. Während des Spiels ist die Stelle wieder Brett und Streifenhintergrund. Zeile 0 ist reiner Hintergrund.
 
 Zeichen im Satz:
 

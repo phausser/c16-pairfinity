@@ -187,7 +187,7 @@ line_ptr
 	sta colr+1
 	rts
 
-; Ganzer Schirm mit dem Schachbrett.
+; Ganzer Schirm mit diagonalen Streifen.
 clear_screen
 	lda #0
 	sta sx
@@ -207,24 +207,17 @@ screen_cell
 	bne screen_row
 	rts
 
-; Schreibt Hintergrund nach (scr),y. A = Bildschirmspalte, cur_y die Zeile.
-; Auf Feldern mit ungerader Summe steht das invertierte Zeichen.
+; Schreibt Hintergrund nach (scr),y. Das Muster kachelt nahtlos.
 bg_cell
-	eor cur_y
-	and #1
-	beq bg_cell_even
-	lda #bg_char | $80
-	bne bg_cell_put
-bg_cell_even
 	lda #bg_char
-bg_cell_put
 	sta (scr),y
 	lda bg_color
 	sta (colr),y
 	rts
 
-; Schachbrett aus 8×8-Feldern, das jeden Pixel-Schritt nach rechts oben wandert.
-; Das Muster wiederholt sich nach 16 Pixeln, bg_step läuft 0–15.
+; Vier Pixel breite Streifen von links oben nach rechts unten.
+; Jeder Schritt verschiebt das Muster einen Pixel nach rechts und oben.
+; Das Muster wiederholt sich nach vier Schritten, bg_step läuft 0–3.
 ; Die Farbe wechselt unabhängig davon alle bg_hue_speed Frames.
 bg_tick
 	dec bg_timer
@@ -234,7 +227,7 @@ bg_tick
 	lda bg_step
 	clc
 	adc #1
-	and #15
+	and #3
 	sta bg_step
 	jsr bg_glyph
 bg_scroll_done
@@ -258,19 +251,17 @@ bg_done
 	rts
 
 bg_glyph
-	ldx bg_step
-	lda bg_mask,x
+	lda bg_step
+	asl			; rechts und oben verschieben die Diagonale je um 1 Pixel
 	sta bg_row_byte
 	ldy #0
 bg_row
 	tya
 	clc
-	adc bg_step
-	and #8			; untere Hälfte des Musters: Zeile invertiert
-	beq bg_plain
-	lda #$ff
-bg_plain
-	eor bg_row_byte
+	adc bg_row_byte
+	and #7
+	tax
+	lda bg_mask,x
 	sta charset + bg_char * 8,y
 	iny
 	cpy #8
@@ -315,10 +306,17 @@ bg_palette
 	!byte $16, $14, $12, $18, $17, $15
 bg_palette_end
 
-; Obere Musterzeile, um bg_step Pixel nach rechts geschoben.
+; Streifen-Font: 8 Zeilen, je ein Byte. 1 = Farbe, 0 = Schwarz.
+; Die erste Zeile ist oben, das linke Bit ist der linke Pixel.
 bg_mask
-	!byte $00, $80, $c0, $e0, $f0, $f8, $fc, $fe
-	!byte $ff, $7f, $3f, $1f, $0f, $07, $03, $01
+	!byte %11110000
+	!byte %11111000
+	!byte %01111100
+	!byte %00111110
+	!byte %00011111
+	!byte %10001111
+	!byte %11000111
+	!byte %11100011
 
 line_lo
 	!for i, 0, 24 { !byte <(screen + i * 40) }
@@ -372,7 +370,7 @@ add_done
 	jmp draw_score
 
 ; Zentriert den Text aus words in der Bildschirmmitte. A = Offset.
-; Schwarzes Feld mit einem Zeichen Rand, die Schrift blinkt.
+; Weisses Feld mit einem Zeichen Rand und schwarzer, blinkender Schrift.
 show_label
 	pha
 	tax
@@ -398,8 +396,9 @@ frame_row
 	ldy box_w
 	dey
 frame_col
-	lda #0
+	lda #$80		; invertiertes Leerzeichen: vollstaendig weisses Feld
 	sta (scr),y
+	lda #hud_color
 	sta (colr),y
 	dey
 	bpl frame_col
@@ -421,6 +420,7 @@ frame_col
 	ldy #0
 label_char
 	lda words,x
+	ora #$80		; invertierte Glyphe: schwarze Schrift auf Weiss
 	sta (scr),y
 	lda #msg_color
 	sta (colr),y
