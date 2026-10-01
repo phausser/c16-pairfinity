@@ -309,14 +309,14 @@ bg_palette_end
 ; Streifen-Font: 8 Zeilen, je ein Byte. 1 = Farbe, 0 = Schwarz.
 ; Die erste Zeile ist oben, das linke Bit ist der linke Pixel.
 bg_mask
-	!byte %11110000
-	!byte %11111000
-	!byte %01111100
-	!byte %00111110
-	!byte %00011111
-	!byte %10001111
-	!byte %11000111
-	!byte %11100011
+	!byte %11110111
+	!byte %11111011
+	!byte %11111101
+	!byte %11111110
+	!byte %01111111
+	!byte %10111111
+	!byte %11011111
+	!byte %11101111
 
 line_lo
 	!for i, 0, 24 { !byte <(screen + i * 40) }
