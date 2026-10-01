@@ -14,86 +14,86 @@
 	!byte $dd, $bb, $77, $ee, $dd, $bb, $77, $ee
 	!byte $dd, $bb, $77, $ee, $dd, $bb, $77, $ee
 	!byte $dd, $bb, $77, $ee, $dd, $bb, $77, $ee
-; 1 Apfel
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fc
-	!byte $ff, $ff, $ff, $dc, $d8, $e0, $e3, $2c
-	!byte $ff, $ff, $87, $0f, $1f, $7f, $ff, $3f
-	!byte $f0, $e6, $e7, $e3, $e0, $e0, $e0, $f0
-	!byte $08, $00, $00, $00, $00, $00, $00, $00
-	!byte $0f, $07, $07, $07, $07, $07, $07, $0f
-	!byte $f0, $f8, $f8, $fc, $fe, $ff, $ff, $ff
-	!byte $00, $00, $00, $00, $18, $ff, $ff, $ff
-	!byte $0f, $1f, $1f, $3f, $7f, $ff, $ff, $ff
-; 2 Orange
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe
-	!byte $ff, $ff, $ff, $e4, $e0, $e7, $81, $00
-	!byte $ff, $ff, $1f, $07, $0f, $ff, $ff, $7f
-	!byte $fc, $f8, $f9, $f9, $f1, $f0, $f0, $f0
-	!byte $00, $00, $80, $c0, $80, $00, $00, $00
-	!byte $3f, $1f, $1f, $1f, $0f, $0f, $0f, $0f
-	!byte $f0, $f8, $f8, $fc, $fe, $ff, $ff, $ff
-	!byte $00, $00, $00, $00, $00, $81, $ff, $ff
-	!byte $0f, $1f, $1f, $3f, $7f, $ff, $ff, $ff
+; 1 Banane
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $ff, $87, $87, $87, $b7, $b7, $33, $7b
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $e0
+	!byte $fe, $fe, $fc, $f9, $f3, $c7, $1f, $7e
+	!byte $7b, $fb, $db, $db, $b3, $b7, $67, $ef
+	!byte $cf, $cf, $cc, $e7, $f1, $fc, $ff, $ff
+	!byte $f9, $c7, $3f, $fc, $f0, $00, $ff, $ff
+	!byte $cf, $9f, $3f, $7f, $0f, $0f, $ff, $ff
+; 2 Apfel
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $fe, $fc
+	!byte $ff, $ff, $ff, $f0, $f0, $f7, $14, $c1
+	!byte $ff, $ff, $7f, $7f, $ff, $ff, $3f, $9f
+	!byte $f9, $fb, $f3, $f7, $f7, $f7, $f7, $f3
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $cf, $ef, $e7, $e7, $e7, $a7, $a7, $a7
+	!byte $fb, $f9, $fc, $fe, $ff, $ff, $ff, $ff
+	!byte $ff, $f4, $ff, $63, $00, $80, $ff, $ff
+	!byte $4f, $cf, $9f, $3f, $0f, $0f, $ff, $ff
 ; 3 Birne
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $ff, $ff, $df, $ef, $ef, $e7, $c3, $81
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $ff, $ff, $ff, $ff, $fe, $fc, $f8, $f9
-	!byte $81, $81, $00, $00, $00, $00, $00, $80
-	!byte $ff, $ff, $ff, $ff, $7f, $3f, $1f, $1f
-	!byte $f1, $f1, $f0, $f8, $fc, $ff, $ff, $ff
-	!byte $c0, $80, $00, $00, $00, $18, $ff, $ff
-	!byte $0f, $0f, $0f, $1f, $3f, $ff, $ff, $ff
-; 4 Banane
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $ff, $ff, $ff, $fe, $ff, $ff, $ff, $ff
-	!byte $ff, $ff, $ff, $3f, $3f, $3f, $1f, $0f
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $fe, $fe, $fe, $fe, $fc, $fc, $f8, $f0
-	!byte $0f, $87, $87, $07, $07, $07, $07, $0f
-	!byte $ff, $ff, $f8, $e0, $e0, $ff, $ff, $ff
-	!byte $c0, $00, $00, $03, $3f, $ff, $ff, $ff
-	!byte $1f, $3f, $ff, $ff, $ff, $ff, $ff, $ff
-; 5 Traube
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $fe, $fd
-	!byte $ff, $ff, $e3, $e7, $e7, $81, $00, $80
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $7f, $3f
-	!byte $f8, $fc, $f8, $fc, $f8, $fc, $fe, $fe
-	!byte $00, $00, $00, $80, $01, $00, $00, $00
-	!byte $1f, $3f, $1f, $3f, $9f, $3f, $7f, $7f
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $00, $00, $81, $c3, $e7, $ff, $ff, $ff
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-; 6 Kirsche
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $ff, $ff, $ff, $fc, $fa, $f6, $ee, $df
-	!byte $ff, $ff, $87, $0f, $3f, $ff, $ff, $7f
-	!byte $ff, $ff, $ff, $fe, $fe, $f8, $f6, $e6
-	!byte $bf, $7f, $7f, $ff, $fe, $7c, $3b, $19
-	!byte $7f, $7f, $7f, $7f, $1f, $0f, $07, $87
-	!byte $e0, $e0, $e0, $f0, $f8, $ff, $ff, $ff
-	!byte $18, $18, $1c, $3e, $7f, $ff, $ff, $ff
-	!byte $07, $07, $0f, $1f, $ff, $ff, $ff, $ff
-; 7 Zitrone
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe
-	!byte $ff, $ff, $ff, $ff, $ff, $ff, $81, $00
+	!byte $ff, $ff, $ff, $ff, $ff, $fe, $fe, $fe
+	!byte $ff, $c3, $c1, $ef, $01, $7c, $fe, $fe
 	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $7f
-	!byte $fc, $f9, $f1, $c1, $c0, $f0, $f8, $fc
-	!byte $00, $80, $c0, $80, $00, $00, $00, $00
-	!byte $3f, $1f, $0f, $03, $03, $0f, $1f, $3f
-	!byte $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $00, $81, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-; 8 Erdbeere
-	!byte $ff, $ff, $ff, $ff, $f7, $f3, $f9, $f8
-	!byte $ff, $ff, $fb, $e7, $e7, $66, $00, $00
-	!byte $ff, $ff, $ff, $ff, $ef, $cf, $9f, $1f
-	!byte $f1, $f0, $f2, $f8, $f8, $fc, $fc, $fe
-	!byte $00, $00, $00, $00, $42, $00, $00, $20
-	!byte $8f, $0f, $4f, $1f, $1f, $3f, $3f, $7f
-	!byte $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff
-	!byte $00, $00, $81, $c3, $e7, $ff, $ff, $ff
-	!byte $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $fc, $fd, $f9, $fb, $f3, $f7, $f7, $f7
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $7f, $3f, $3f, $9f, $df, $cf, $4f, $cf
+	!byte $f7, $f3, $f9, $fc, $fe, $ff, $ff, $ff
+	!byte $ff, $fe, $f1, $ff, $20, $80, $ff, $ff
+	!byte $4f, $cf, $9f, $3f, $07, $07, $ff, $ff
+; 4 Kirsche
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $ff, $ff, $fd, $f8, $f0, $e5, $cd, $9d
+	!byte $ff, $ff, $ff, $7f, $1f, $0f, $87, $87
+	!byte $ff, $fe, $fe, $fc, $fd, $f8, $f0, $e6
+	!byte $3d, $7d, $fc, $fe, $fe, $7c, $38, $13
+	!byte $cf, $ff, $ff, $ff, $ff, $3f, $1f, $0f
+	!byte $e6, $e0, $e0, $f0, $f8, $ff, $ff, $ff
+	!byte $13, $10, $10, $38, $1c, $ff, $ff, $ff
+	!byte $0f, $0f, $0f, $1f, $07, $ff, $ff, $ff
+; 5 Trauben
+	!byte $ff, $fc, $fc, $fe, $ff, $ff, $fc, $fb
+	!byte $ff, $7f, $3d, $1b, $07, $ef, $44, $bb
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $7f, $bf
+	!byte $fb, $fb, $f8, $fc, $fe, $fe, $fe, $fe
+	!byte $bb, $33, $00, $44, $ee, $ee, $cc, $00
+	!byte $bf, $3f, $3f, $7f, $ff, $ff, $ff, $ff
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $11, $bb, $bb, $b3, $80, $c0, $ff, $ff
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+; 6 Orange
+	!byte $ff, $ff, $ff, $ff, $fe, $fc, $f9, $f3
+	!byte $ff, $ff, $ff, $83, $38, $d6, $11, $11
+	!byte $ff, $ff, $ff, $ff, $ff, $7f, $3f, $9f
+	!byte $f4, $e4, $e8, $ef, $e8, $e4, $f4, $f3
+	!byte $92, $54, $38, $ff, $38, $54, $92, $11
+	!byte $4f, $4f, $27, $e7, $27, $47, $47, $8f
+	!byte $f9, $fc, $fe, $ff, $ff, $ff, $ff, $ff
+	!byte $11, $d6, $38, $00, $c0, $ff, $ff, $ff
+	!byte $0f, $1f, $3f, $07, $07, $ff, $ff, $ff
+; 7 Pflaume
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $ff, $ff, $fb, $f3, $e3, $e7, $ef, $c3
+	!byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	!byte $ff, $ff, $fe, $fe, $fc, $fd, $fd, $fd
+	!byte $a9, $5c, $de, $be, $be, $be, $be, $be
+	!byte $ff, $ff, $7f, $7f, $3f, $3f, $3f, $3f
+	!byte $fd, $fd, $fc, $fe, $ff, $ff, $ff, $ff
+	!byte $bc, $bc, $b8, $70, $00, $80, $ff, $ff
+	!byte $3f, $3f, $7f, $7f, $0f, $0f, $ff, $ff
+; 8 Himbeere
+	!byte $ff, $ff, $fb, $fd, $fc, $fe, $fc, $fa
+	!byte $ff, $bf, $b7, $bb, $92, $00, $00, $da
+	!byte $ff, $ff, $ff, $1f, $7f, $ff, $3f, $1f
+	!byte $fa, $fc, $fb, $fb, $fc, $fd, $fd, $fc
+	!byte $da, $00, $6d, $6d, $00, $b6, $b6, $00
+	!byte $1f, $3f, $1f, $1f, $3f, $3f, $3f, $3f
+	!byte $fe, $fe, $fe, $ff, $ff, $ff, $ff, $ff
+	!byte $da, $da, $00, $68, $80, $ff, $ff, $ff
+	!byte $7f, $7f, $7f, $07, $07, $ff, $ff, $ff
 ; Ziffern 0–9, dann A–Z
 ; 0
 	!byte %01111100

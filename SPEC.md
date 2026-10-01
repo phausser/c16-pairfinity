@@ -45,22 +45,22 @@ Zeichen im Satz:
 | `$0A`–`$51` | Früchte 1–8, je 3×3, dieselbe Reihenfolge. Motiv `n` beginnt bei `$0A + (n-1)*9` |
 | danach | Ziffern `0`–`9` ab `$52`, danach `A`–`Z` alphabetisch ab `$5C` bis `$75` |
 
-Offene Karte, nach der Vorlage: die Fläche ist die Fruchtfarbe, die Frucht selbst ist eine geschlossene schwarze Silhouette. Apfel, Orange, Birne und Banane folgen dem Blatt direkt (Stiel und Blatt am Apfel und an der Orange, Stiel an der Birne, Sichel der Banane). Dazu Traube, Kirsche, Zitrone und Erdbeere, dieselbe Art Fläche und Silhouette.
+Offene Karten übernehmen die schwarzen Konturen der 24×24-Pixel-Vorlage pixelgenau. Die Fläche kommt der jeweiligen Fruchtfarbe nahe. Reihenfolge von links nach rechts, oben nach unten: Banane, Apfel, Birne, Kirsche, Trauben, Orange, Pflaume, Himbeere.
 
-Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Der globale Hintergrund und der Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Silhouette gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Silhouette liegt in der Mitte der Karte, mit mindestens zwei Pixeln Farbrand an jedem Rand. Der Kartenrücken ist für alle Motive gleich, die Streifen laufen bis an den Rand, und er trägt die Fruchtfarbe nicht.
+Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Der globale Hintergrund und der Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Kontur gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Kontur liegt in Spalte 2–21 und Zeile 1–21 der Karte. Der Kartenrücken ist für alle Motive gleich, die Streifen laufen bis an den Rand, und er trägt die Fruchtfarbe nicht.
 
-Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte verdeckte Karte ist Weiss `$71`. Eine offene Karte bleibt in ihrer Fruchtfarbe; die schwarze Frucht bleibt schwarz. `START` und `GAME OVER` blinken über Bit 7. Sonst blinkt nichts. Die acht Motive:
+Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte verdeckte Karte ist Weiss `$71`. Eine offene Karte bleibt in ihrer Fruchtfarbe; die Fruchtkontur bleibt schwarz. `START` und `GAME OVER` blinken über Bit 7. Sonst blinkt nichts. Die acht Motive:
 
-| Motiv | Fläche | Byte | Silhouette |
+| Motiv | Fläche | Byte | Kontur |
 | --- | --- | --- | --- |
-| 1 Apfel | Rot | `$52` | rund, Stiel, ein Blatt |
-| 2 Orange | Orange | `$58` | Kreis, kleiner Stiel, Blatt |
-| 3 Birne | Grün | `$55` | schmal oben, bauchig unten, Stiel |
-| 4 Banane | Goldgelb | `$69` | Sichel |
-| 5 Traube | Blauviolett | `$4E` | mehrere Kugeln, kleines Blatt |
-| 6 Kirsche | Kirschrot | `$3B` | zwei Kugeln, Stiele zusammen |
-| 7 Zitrone | Zitronengelb | `$67` | Oval mit Spitzen |
-| 8 Erdbeere | Pink | `$5B` | breit oben, spitz unten, Blätterkrone |
+| 1 Banane | Gelb | `$67` | gebogene Banane |
+| 2 Apfel | Rot | `$52` | Apfel mit Stiel und Blatt |
+| 3 Birne | Grün | `$55` | Birne mit Stiel |
+| 4 Kirsche | Kirschrot | `$3B` | zwei Kirschen mit Stielen |
+| 5 Trauben | Blauviolett | `$4E` | Traubenrispe |
+| 6 Orange | Orange | `$58` | aufgeschnittene Orange |
+| 7 Pflaume | Dunkelviolett | `$3E` | Pflaume mit Stiel |
+| 8 Himbeere | Pink | `$5B` | Himbeere mit Blättern |
 
 HUD-Text ist Weiß, `$71`.
 

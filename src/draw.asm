@@ -450,7 +450,8 @@ word_game_over = * - words
 fruit_char
 	!byte $0a, $13, $1c, $25, $2e, $37, $40, $49
 fruit_color
-	!byte $52, $58, $55, $69, $4e, $3b, $67, $5b
+; Banane, Apfel, Birne, Kirsche, Trauben, Orange, Pflaume, Himbeere.
+	!byte $67, $52, $55, $3b, $4e, $58, $3e, $5b
 
 !ifdef PREVIEW {
 ; Alle Plätze offen, Motive 1–8 der Reihe nach.
