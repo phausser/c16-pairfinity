@@ -206,6 +206,8 @@ drop_slot
 	sta target
 	lda anim_col
 	jsr col_x
+	lda #snd_drop
+	jsr play_loop
 	lda #$ff		; eine Zeile über dem Raster
 	sta sy
 drop_fall
@@ -219,7 +221,6 @@ drop_fall
 	sta clear_end		; frei gewordene Zeile über der Karte
 	jsr clear_rows
 drop_draw
-	jsr tick
 	lda #back_char
 	ldx #back_color
 	jsr draw_at
@@ -229,6 +230,8 @@ drop_draw
 	inc sy
 	jmp drop_fall
 drop_land
+	lda #$ff		; Klick-Loop endet nach dem laufenden Schritt
+	sta snd_loop
 	ldx drop_cell
 	lda drop_motif
 	sta board,x

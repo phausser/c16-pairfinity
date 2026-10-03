@@ -1,5 +1,7 @@
-; TED-Ton. Stimme 1 spielt Tonfolgen, Stimme 2 klickt beim Aufdecken und rauscht beim Fallen.
-; Registerwert für f Hz (PAL): 1024 - 111861 / f.
+; TED-Ton. Drei Effekte aus c16-sound-fx (https://github.com/phausser/c16-sound-fx),
+; nur PAL: 69 zelda-discovery (Paar), 31 sword-swing (Karte aufgedeckt),
+; 13 action-denied (Fehlversuch), 38 switch-click im Loop (fallende Karte).
+; Ein neuer Effekt ersetzt den laufenden.
 
 !addr {
 ted_freq1  = $ff0e		; Stimme 1, untere 8 Bit
@@ -15,106 +17,102 @@ sound_init
 	sta ted_sound
 	lda #0
 	sta snd_time
-	sta tick_time
+	lda #$ff
+	sta snd_loop
 	rts
 
-; Startet die Tonfolge ab Offset A in sounds.
+; Wiederholt den Effekt ab Offset A, bis snd_loop $ff wird. Ein laufender
+; Effekt spielt erst zu Ende, der Loop schliesst an.
+play_loop
+	sta snd_loop
+	ldx snd_time
+	bne sound_done
+	beq snd_start
+
+; Startet den Effekt ab Offset A in sounds.
 play
+	ldx #$ff
+	stx snd_loop
+snd_start
 	sta snd_pos
 	; weiter in snd_next
 
-; Nächster Ton: Frequenz unten, oben, Frames. 0 Frames beendet die Folge.
+; Nächster Schritt: Frames, Stimme 1 unten/oben, Stimme 2 unten/oben, $ff11.
+; 0 Frames beendet den Effekt oder springt zurück an den Loop.
 snd_next
 	ldx snd_pos
-	lda sounds+2,x
-	beq snd_off
-	sta snd_time
 	lda sounds,x
+	sta snd_time
+	bne snd_step
+	lda snd_loop
+	bmi snd_off
+	sta snd_pos
+	bpl snd_next
+snd_step
+	lda sounds+1,x
 	sta ted_freq1
 	lda ted_misc1
 	and #%11111100
-	ora sounds+1,x
+	ora sounds+2,x
 	sta ted_misc1
-	lda ted_sound
-	ora #%00010000
-	sta ted_sound
-	inx
-	inx
-	inx
-	stx snd_pos
-	rts
-snd_off
-	lda ted_sound
-	and #%11101111
-	sta ted_sound
-	rts
-
-; Kurzes Rauschen, ein Frame lang.
-tick
-	lda #<tick_freq
-	ldx #>tick_freq
-	ldy #%01000000
-	bne voice2
-
-; Kurzer hoher Klick, ein Frame lang.
-click
-	lda #<click_freq
-	ldx #>click_freq
-	ldy #%00100000
-	; weiter in voice2
-
-; Stimme 2 für einen Frame. A/X = Frequenz, Y = Rechteck- oder Rauschbit.
-voice2
+	lda sounds+3,x
 	sta ted_freq2
-	txa
-	sta tick_x
 	lda ted_freq2h
 	and #%11111100
-	ora tick_x
+	ora sounds+4,x
 	sta ted_freq2h
-	tya
-	sta tick_x
-	lda ted_sound
-	and #%10011111
-	ora tick_x
+	lda sounds+5,x
 	sta ted_sound
-	lda #1
-	sta tick_time
+	txa
+	clc
+	adc #6
+	sta snd_pos
+	rts
+snd_off
+	lda #volume
+	sta ted_sound
 	rts
 
 ; Einmal je Frame aus wait_frames.
 sound_tick
 	lda snd_time
-	beq sound_no_tone
-	dec snd_time
-	bne sound_no_tone
-	jsr snd_next
-sound_no_tone
-	lda tick_time
 	beq sound_done
-	dec tick_time
+	dec snd_time
 	bne sound_done
-	lda ted_sound
-	and #%10011111
-	sta ted_sound
+	jsr snd_next
 sound_done
 	rts
 
-tick_freq  = 1000
-click_freq = 1024 - 111861 / 2000
-
-!macro note .f, .frames {
-	!byte <(1024 - 111861 / .f), >(1024 - 111861 / .f), .frames
+; Registerwerte für PAL, gerundet wie in c16-sound-fx.
+!macro step .frames, .hz1, .hz2, .control {
+	.n1 = 1024 - (110840 + .hz1 / 2) / .hz1
+	.n2 = 1024 - (110840 + .hz2 / 2) / .hz2
+	!byte .frames, <.n1, >.n1, <.n2, >.n2, .control
 }
 
 sounds
-snd_pair = * - sounds		; hoch, aufsteigend
-	+note 1047, 3		; C6
-	+note 1319, 3		; E6
-	+note 1568, 3		; G6
-	+note 2093, 6		; C7
-	!byte 0, 0, 0
-snd_miss = * - sounds		; tief, absteigend
-	+note 196, 6		; G3
-	+note 147, 10		; D3
-	!byte 0, 0, 0
+snd_pair = * - sounds		; 69 zelda-discovery
+	+step 3, 659, 110, $14
+	+step 3, 784, 110, $14
+	+step 3, 988, 110, $15
+	+step 3, 1319, 110, $15
+	+step 4, 1568, 110, $14
+	+step 5, 1976, 110, $13
+	+step 7, 2637, 110, $11
+	!byte 0
+snd_flip = * - sounds		; 31 sword-swing
+	+step 2, 110, 350, $42
+	+step 4, 110, 1800, $44
+	+step 2, 110, 600, $42
+	!byte 0
+snd_miss = * - sounds		; 13 action-denied
+	+step 4, 146, 110, $15
+	+step 2, 110, 110, $00
+	+step 4, 130, 110, $14
+	!byte 0
+snd_drop = * - sounds		; 38 switch-click, Pause wie im Loop der Bibliothek
+	+step 2, 110, 2000, $44
+	+step 10, 110, 110, $00
+	!byte 0
+
+snd_flip_frames = 8		; Länge von snd_flip

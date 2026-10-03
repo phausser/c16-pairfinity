@@ -114,7 +114,7 @@ Index einer Zelle: `col + row*4`, `row` 0 ist unten.
 
 Zufall: 16-Bit-LFSR. Startwert aus der Rasterposition: `$FF1E` (Spalte) und `$FF1D` (Zeile), zweimal im Abstand einiger Zeilen gelesen. `$FF0B` ist nur das Vergleichsregister für den Raster-IRQ. Ein Startwert 0 wird zu 1.
 
-Ton über die zwei TED-Kanäle: kurz und hoch bei einem Paar, kurz und tief bei einem Fehlversuch, ein Tick je Fallschritt.
+Ton über die zwei TED-Kanäle mit drei PAL-Effekten aus [c16-sound-fx](https://github.com/phausser/c16-sound-fx): 31 sword-swing beim Aufdecken, 69 zelda-discovery bei einem Paar, 13 action-denied bei einem Fehlversuch (nach dem Aufdecken), 38 switch-click im Loop mit zehn Frames Pause, bis eine nachfallende Karte liegt. Ein laufender Effekt spielt vor dem Loop zu Ende.
 
 ## Build
 

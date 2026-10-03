@@ -209,11 +209,13 @@ pick_cursor
 pick_first
 	stx open1
 	inc phase
-	jsr click
+	lda #snd_flip
+	jsr play
 	jmp draw_cursor_cell
 pick_second
 	stx open2
-	jsr click
+	lda #snd_flip
+	jsr play
 	jsr draw_cursor_cell
 	ldx open1
 	ldy open2
@@ -236,6 +238,8 @@ pick_second
 pick_miss
 	lda #2
 	sta phase
+	ldx #snd_flip_frames	; Aufdecken erst ausklingen lassen
+	jsr wait_frames
 	lda #snd_miss
 	jsr play
 pick_done
