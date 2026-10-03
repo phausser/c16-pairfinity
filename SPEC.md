@@ -49,7 +49,7 @@ Offene Karten übernehmen die schwarzen Konturen der 24×24-Pixel-Vorlage pixelg
 
 Im HiRes-Textmodus malt ein gesetztes Pixel die Farbe aus dem Farb-RAM, ein gelöschtes den globalen Hintergrund. Der globale Hintergrund und der Rahmen sind schwarz. Im Fruchtzeichen sind die Pixel der Kontur gelöscht und alle übrigen Pixel des 3×3-Feldes gesetzt. Die Kontur liegt in Spalte 2–21 und Zeile 1–21 der Karte. Der Kartenrücken ist für alle Motive gleich, die Streifen laufen bis an den Rand, und er trägt die Fruchtfarbe nicht.
 
-Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte verdeckte Karte ist Weiss `$71`. Eine offene Karte bleibt in ihrer Fruchtfarbe; die Fruchtkontur bleibt schwarz. `START` und `GAME OVER` blinken über Bit 7. Sonst blinkt nichts. Die acht Motive:
+Farbbyte: Bit 7 blinkt, Bits 6–4 sind die Helligkeit, Bits 3–0 die Farbe. Die Helligkeit der Fruchtflächen bleibt unter 7, damit sie nicht ausbleicht. Kartenrücken überall Hellgrau `$61`. Die angewählte verdeckte Karte ist Weiss `$71`. Eine offene Karte bleibt in ihrer Fruchtfarbe; die Fruchtkontur bleibt schwarz. `START` und `GAME OVER` blinken in Software: Die Schrift wechselt alle 16 Frames mit invertierten Leerzeichen, das weiße Feld bleibt stehen. Bit 7 wird nicht genutzt, weil der TED dabei die gesetzten Pixel ausblendet und das invertierte Feld schwarz würde. Sonst blinkt nichts. Die acht Motive:
 
 | Motiv | Fläche | Byte | Kontur |
 | --- | --- | --- | --- |

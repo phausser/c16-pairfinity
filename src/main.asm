@@ -57,6 +57,8 @@ bg_timer   = $0446		; Frames bis zum nächsten Scroll-Schritt
 bg_step    = $0447		; Pixel-Phase der diagonalen Streifen, 0–3
 bg_phase   = $0455		; Index in bg_palette
 bg_hue_timer = $0456		; Frames bis zum nächsten Farbwechsel
+label_mask = $0457		; $ff Schrift sichtbar, 0 nur weisses Feld
+blink_timer = $0458		; Frames bis zum nächsten Blinkwechsel
 score      = $0448		; 3 Ziffern, höchste zuerst
 game_over  = $044b
 settle_now = $044c		; 1: Fehlversuch zu, Karte fällt noch
@@ -64,6 +66,7 @@ shake_i    = $044d
 snd_pos    = $044e
 snd_time   = $044f
 snd_loop   = $0450		; Offset des Loops, $ff ohne
+label_ofs  = $0451		; Offset des Textes in words
 label_len  = $0452
 box_x      = $0453
 box_w      = $0454
@@ -76,7 +79,6 @@ back_char  = 1
 back_color = $61		; Hellgrau
 hud_color  = $71
 cursor_color = $71		; angewählte verdeckte Karte, Weiss
-msg_color  = hud_color | $80	; Schriftzug blinkt
 ch_0       = $52		; Ziffern, danach A–Z alphabetisch
 ch_a       = $5c
 ch_e       = $60
@@ -211,10 +213,19 @@ game_end
 	jsr wait_fire
 	jmp new_game
 
-; Wartet auf einen neuen Druck auf Feuer.
+; Wartet auf einen neuen Druck auf Feuer. Der Text in der Mitte blinkt dabei.
 wait_fire
 	ldx #1
 	jsr wait_frames
+	dec blink_timer
+	bne wait_key
+	lda #blink_frames
+	sta blink_timer
+	lda label_mask
+	eor #$ff
+	sta label_mask
+	jsr label_text
+wait_key
 	jsr read_edges
 	and #$10
 	beq wait_fire

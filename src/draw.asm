@@ -329,6 +329,7 @@ hud_col    = 30
 hud        = hud_row * 40 + hud_col
 msg_top    = 11		; (25 - 3) / 2, Bildschirmmitte
 msg_row    = 12
+blink_frames = 16		; Frames je Blinkphase
 
 draw_hud
 	ldx #4
@@ -370,9 +371,11 @@ add_done
 	jmp draw_score
 
 ; Zentriert den Text aus words in der Bildschirmmitte. A = Offset.
-; Weisses Feld mit einem Zeichen Rand und schwarzer, blinkender Schrift.
+; Weisses Feld mit einem Zeichen Rand und schwarzer Schrift. Das Blinken
+; übernimmt wait_fire in Software: Bit 7 im Farbbyte würde auch das Feld
+; schwarz blinken lassen, weil der TED die gesetzten Pixel ausblendet.
 show_label
-	pha
+	sta label_ofs
 	tax
 	lda words,x
 	sta label_len
@@ -405,25 +408,28 @@ frame_col
 	inc cur_y
 	dec rows_left
 	bne frame_row
-	pla
-	clc
-	adc #1			; erstes Zeichen, X überlebt line_ptr nicht
-	pha
+	lda #$ff
+	sta label_mask
+	lda #blink_frames
+	sta blink_timer
+	; weiter in label_text
+
+; Schreibt den Text ins Feld, mit label_mask 0 nur invertierte Leerzeichen.
+label_text
 	lda box_x
 	clc
 	adc #1
 	sta sx
 	lda #msg_row
 	jsr line_ptr
-	pla
-	tax
+	ldx label_ofs		; X überlebt line_ptr nicht
+	inx			; erstes Zeichen
 	ldy #0
 label_char
 	lda words,x
+	and label_mask
 	ora #$80		; invertierte Glyphe: schwarze Schrift auf Weiss
 	sta (scr),y
-	lda #msg_color
-	sta (colr),y
 	inx
 	iny
 	cpy label_len
