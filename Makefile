@@ -21,10 +21,10 @@ src/charset.asm: tools/charset.py
 	python3 tools/charset.py > src/charset.asm
 
 run: pairfinity.prg
-	xplus4 -model c16 +sound -autostart pairfinity.prg
+	xplus4 -model c16 -sound -autostart pairfinity.prg
 
 preview: preview.prg
-	xplus4 -model c16 +sound -autostart preview.prg
+	xplus4 -model c16 -sound -autostart preview.prg
 
 lint: pairfinity.prg preview.prg
 	python3 -m py_compile tools/charset.py tools/lint.py
